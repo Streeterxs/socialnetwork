@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
 
@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: false
         }
+    }],
+    friends: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }]
 });
 
@@ -66,7 +70,7 @@ userSchema.methods.verifyAuthToken = async function(callbackSuccess?: () => {}, 
 }
 
 userSchema.statics.findByCredentials = async (email: string, password: string) => {
-    const user = await userModel.findOne({email});
+    const user = await User.findOne({email});
     if (!user) {
         throw new Error('Invalid login credentials');
     }
@@ -78,7 +82,7 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
     return user;
 }
 
-const userModel = mongoose.model<IUser, IUserModel>('Model', userSchema);
+const User = mongoose.model<IUser, IUserModel>('Model', userSchema);
 
 
-export default userModel;
+export default User;

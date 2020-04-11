@@ -71,6 +71,7 @@ userSchema.methods.verifyAuthToken = async function(callbackSuccess?: () => {}, 
 
 userSchema.statics.findByCredentials = async (email: string, password: string) => {
     const user = await User.findOne({email});
+    console.log('user: ', user);
     if (!user) {
         throw new Error('Invalid login credentials');
     }
@@ -82,7 +83,7 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
     return user;
 }
 
-const User = mongoose.model<IUser, IUserModel>('Model', userSchema);
+const User = mongoose.model<IUser, IUserModel>('User', userSchema);
 
 
 export default User;

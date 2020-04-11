@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 
 import { IUser } from '../users/UserModel';
 import { IReply } from '../reply/ReplyModel';
@@ -13,7 +13,8 @@ export interface IComment extends mongoose.Document {
 const commentSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     content: {
         type: String,
@@ -24,10 +25,11 @@ const commentSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
-    replies: [{
+    post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Reply'
-    }]
+        ref: 'Post',
+        required: true
+    }
 });
 
 const Comment = mongoose.model<IComment>('Model', commentSchema);

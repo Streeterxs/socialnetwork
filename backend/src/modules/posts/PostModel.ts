@@ -23,13 +23,9 @@ const postSchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
-    },
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }]
+    }
 })
 
-const Post = mongoose.model<IPost>('Model', postSchema);
+const Post = mongoose.model<IPost>('Post', postSchema);
 
 export default Post;

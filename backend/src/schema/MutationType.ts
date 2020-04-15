@@ -1,6 +1,7 @@
 import { GraphQLObjectType } from "graphql";
 import UserMutations from "../modules/users/mutations";
 import PostMutation from "../modules/posts/mutations/PostMutation";
+import CommentMutations from '../modules/comments/mutations';
 
 
 const MutationType = new GraphQLObjectType({
@@ -8,7 +9,8 @@ const MutationType = new GraphQLObjectType({
     description: 'Mutation Type',
     fields: () => ({
         ...UserMutations,
-        PostMutation
+        PostMutation,
+        ...CommentMutations
     })
 });
 

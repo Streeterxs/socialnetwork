@@ -26,7 +26,9 @@ const CreateReply = mutationWithClientMutationId({
     mutateAndGetPayload: ({author, content, likes}) => {
         try {
             const reply = new Reply({author, content, likes});
-            reply.save();
+            reply.save((err, doc) => {
+                console.log(err);
+            });
             return reply;
         } catch (err) {
             console.log(err);

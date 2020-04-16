@@ -1,7 +1,9 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 
 import { loadLoggedUser } from '../modules/users/UserLoader';
+import { authorPostsLoader } from '../modules/posts/PostLoader';
 import userType from '../modules/users/UserType';
+import PostType from '../modules/posts/PostType';
 
 
 const QueryType = new GraphQLObjectType({
@@ -16,6 +18,15 @@ const QueryType = new GraphQLObjectType({
                 }
             },
             resolve: (value, {token}) => loadLoggedUser(token)
+        },
+        myPosts: {
+            type: GraphQLList(PostType),
+            args: {
+                token: {
+                    type: GraphQLString
+                }
+            },
+            resolve: ({token}) => authorPostsLoader(token)
         }
     })
 });

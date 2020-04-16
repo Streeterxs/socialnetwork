@@ -1,12 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
-import { IUser } from '../users/UserModel';
 import { IComment } from '../comments/CommentModel';
 
 export interface IPost extends mongoose.Document {
-    author: IUser;
+    author: string;
     content: string;
     likes: number;
     comments: IComment[]
+}
+
+export interface IPostModel extends mongoose.Model<IPost> {
+    findAuthorPosts(token: string): IPost[];
 }
 
 const postSchema = new mongoose.Schema({
@@ -24,8 +27,13 @@ const postSchema = new mongoose.Schema({
         required: false,
         default: 0
     }
-})
+});
 
-const Post = mongoose.model<IPost>('Post', postSchema);
+postSchema.statics.findAuthorPosts = (token: string) => {
+    const posts = Post.find({author: token});
+    return posts;
+}
+
+const Post = mongoose.model<IPost, IPostModel>('Post', postSchema);
 
 export default Post;

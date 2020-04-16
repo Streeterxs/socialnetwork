@@ -18,9 +18,6 @@ const PostType = new GraphQLObjectType({
         likes: {
             type: GraphQLInt,
             resolve: (post) => postLoader(post, 'likes')
-        },
-        comments: {
-            type: GraphQLList(CommentType)
         }
     })
 })

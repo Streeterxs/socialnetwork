@@ -17,6 +17,10 @@ const ReplyType = new GraphQLObjectType({
             type: GraphQLInt,
             resolve: (reply) => replyLoader(reply, 'likes')
         },
+        comment: {
+            type: GraphQLString,
+            resolve: (reply) => replyLoader(reply, 'comment')
+        }
     })
 });
 

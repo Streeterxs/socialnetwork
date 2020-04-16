@@ -18,8 +18,9 @@ const CommentType = new GraphQLObjectType({
             type: GraphQLInt,
             resolve: (comment) => commentLoader(comment, 'likes')
         },
-        replies: {
-            type: GraphQLList(ReplyType)
+        post: {
+            type: GraphQLString,
+            resolve: (comment) => commentLoader(comment, 'post')
         }
     })
 });

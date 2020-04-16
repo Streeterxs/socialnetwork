@@ -2,9 +2,10 @@ import mongoose from 'mongoose';
 import { IUser } from '../users/UserModel';
 
 export interface IReply extends mongoose.Document {
-    author: IUser;
+    author: string;
     content: string;
     likes: number;
+    comment: string;
 }
 
 const replySchema = new mongoose.Schema({

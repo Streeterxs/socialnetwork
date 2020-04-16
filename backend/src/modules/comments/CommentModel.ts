@@ -4,10 +4,14 @@ import { IUser } from '../users/UserModel';
 import { IReply } from '../reply/ReplyModel';
 
 export interface IComment extends mongoose.Document {
-    author: IUser,
+    author: string,
     content: string,
     likes: number,
-    replies: IReply[]
+    post: string
+}
+
+export interface ICommentModel extends mongoose.Model<IComment> {
+    findCommentsForPost(postId: string): IComment[]
 }
 
 const commentSchema = new mongoose.Schema({
@@ -32,6 +36,11 @@ const commentSchema = new mongoose.Schema({
     }
 });
 
-const Comment = mongoose.model<IComment>('Comment', commentSchema);
+commentSchema.statics.findCommentsForPost = async (postId: string) => {
+    const commentsOfPost = await Comment.find({post: postId});
+    return commentsOfPost;
+};
+
+const Comment = mongoose.model<IComment, ICommentModel>('Comment', commentSchema);
 
 export default Comment;

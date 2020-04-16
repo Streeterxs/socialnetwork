@@ -4,6 +4,8 @@ import { loadLoggedUser } from '../modules/users/UserLoader';
 import { authorPostsLoader } from '../modules/posts/PostLoader';
 import userType from '../modules/users/UserType';
 import PostType from '../modules/posts/PostType';
+import CommentType from '../modules/comments/CommentType';
+import { commentsFromPostLoader } from '../modules/comments/CommentLoader';
 
 
 const QueryType = new GraphQLObjectType({
@@ -27,6 +29,15 @@ const QueryType = new GraphQLObjectType({
                 }
             },
             resolve: ({token}) => authorPostsLoader(token)
+        },
+        commentsOfPost: {
+            type: GraphQLList(CommentType),
+            args: {
+                postId: {
+                    type: GraphQLString
+                }
+            },
+            resolve: ({postId}) => commentsFromPostLoader(postId)
         }
     })
 });

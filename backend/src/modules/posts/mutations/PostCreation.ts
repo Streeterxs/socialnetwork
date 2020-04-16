@@ -3,9 +3,9 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import PostType from '../PostType';
 import Post from '../PostModel';
 
-const PostMutation = mutationWithClientMutationId({
-    name: 'PostMutation',
-    description: 'Post mutation',
+const PostCreation = mutationWithClientMutationId({
+    name: 'PostCreation',
+    description: 'Post Creation',
     inputFields: {
         content: {
             type: GraphQLString
@@ -24,7 +24,6 @@ const PostMutation = mutationWithClientMutationId({
         try {
             const postCreated = new Post({content, author});
             await postCreated.save();
-            console.log(postCreated);
             return postCreated;
         } catch (err) {
             console.log(err);
@@ -32,4 +31,4 @@ const PostMutation = mutationWithClientMutationId({
     }
 });
 
-export default PostMutation;
+export default PostCreation;

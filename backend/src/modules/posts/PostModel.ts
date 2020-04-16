@@ -1,15 +1,15 @@
 import mongoose, { Schema } from 'mongoose';
-import { IComment } from '../comments/CommentModel';
+import jsonwebtoken from 'jsonwebtoken';
 
 export interface IPost extends mongoose.Document {
     author: string;
     content: string;
     likes: number;
-    comments: IComment[]
 }
 
 export interface IPostModel extends mongoose.Model<IPost> {
-    findAuthorPosts(token: string): IPost[];
+    findAuthorPosts(id: string): IPost[];
+    findLoggedUserPosts(token: string): IPost[];
 }
 
 const postSchema = new mongoose.Schema({
@@ -29,10 +29,16 @@ const postSchema = new mongoose.Schema({
     }
 });
 
-postSchema.statics.findAuthorPosts = (token: string) => {
-    const posts = Post.find({author: token});
+postSchema.statics.findAuthorPosts = async (id: string) => {
+    const posts = await Post.find({author: id});
     return posts;
 }
+
+postSchema.statics.findLoggedUserPosts = async (token: string) => {
+    const jsonPayload: any = jsonwebtoken.decode(token);
+    return await Post.find({author: jsonPayload._id});
+}
+
 
 const Post = mongoose.model<IPost, IPostModel>('Post', postSchema);
 

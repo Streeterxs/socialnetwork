@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 
 import { loadLoggedUser } from '../modules/users/UserLoader';
-import { authorPostsLoader } from '../modules/posts/PostLoader';
+import { authorPostsLoader, loggedUserPosts } from '../modules/posts/PostLoader';
 import userType from '../modules/users/UserType';
 import PostType from '../modules/posts/PostType';
 import CommentType from '../modules/comments/CommentType';
@@ -28,7 +28,9 @@ const QueryType = new GraphQLObjectType({
                     type: GraphQLString
                 }
             },
-            resolve: ({token}) => authorPostsLoader(token)
+            resolve: (value, {token}) => {
+                loggedUserPosts(token);
+            }
         },
         commentsOfPost: {
             type: GraphQLList(CommentType),
@@ -37,7 +39,7 @@ const QueryType = new GraphQLObjectType({
                     type: GraphQLString
                 }
             },
-            resolve: ({postId}) => commentsFromPostLoader(postId)
+            resolve: (value, {postId}) => commentsFromPostLoader(postId)
         }
     })
 });

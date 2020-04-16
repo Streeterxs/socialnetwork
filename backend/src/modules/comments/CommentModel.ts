@@ -32,6 +32,6 @@ const commentSchema = new mongoose.Schema({
     }
 });
 
-const Comment = mongoose.model<IComment>('Model', commentSchema);
+const Comment = mongoose.model<IComment>('Comment', commentSchema);
 
 export default Comment;

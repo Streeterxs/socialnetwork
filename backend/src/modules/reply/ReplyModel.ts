@@ -10,7 +10,8 @@ export interface IReply extends mongoose.Document {
 const replySchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     content: {
         type: String,
@@ -20,6 +21,11 @@ const replySchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
+    },
+    comment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+        required: true
     }
 });
 

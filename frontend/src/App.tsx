@@ -1,7 +1,29 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import './App.css';
 
-function App() {
+import {
+  RelayEnvironmentProvider,
+  useLazyLoadQuery
+} from 'react-relay/hooks';
+
+import { graphql } from 'relay-runtime';
+
+import environment from './relay/environment';
+
+const loginMutation = graphql`
+  mutation AppLoginMutation {
+    Login(input: {email: "afonso@afonso1", password: "12345678", clientMutationId: "1"}) {
+      user {
+        name
+        token
+      }
+    }
+  }
+`;
+
+const App = () => {
+  const test = useLazyLoadQuery(loginMutation, {});
+  console.log(test)
   return (
     <div className="App">
       Begin
@@ -9,4 +31,12 @@ function App() {
   );
 }
 
-export default App;
+const AppRoot = () => (
+  <RelayEnvironmentProvider environment={environment}>
+    <Suspense fallback={'Loading...'}>
+      <App/>
+    </Suspense>
+  </RelayEnvironmentProvider>
+)
+
+export default AppRoot;

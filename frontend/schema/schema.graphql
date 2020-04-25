@@ -1,0 +1,119 @@
+schema {
+  query: Query
+  mutation: MutationType
+}
+
+"""Comment type"""
+type CommentType {
+  author: User
+  content: String
+  likes: Int
+  post: String
+}
+
+input CreateCommentInput {
+  author: String
+  content: String
+  post: String
+  clientMutationId: String
+}
+
+type CreateCommentPayload {
+  post: CommentType
+  clientMutationId: String
+}
+
+input CreateReplyInput {
+  author: String
+  content: String
+  likes: Int
+  clientMutationId: String
+}
+
+type CreateReplyPayload {
+  reply: ReplyType
+  clientMutationId: String
+}
+
+input LoginInput {
+  email: String
+  password: String
+  clientMutationId: String
+}
+
+type LoginPayload {
+  user: User
+  clientMutationId: String
+}
+
+"""Mutation Type"""
+type MutationType {
+  """Create new user"""
+  CreateUser(input: UserCreationInput!): UserCreationPayload
+
+  """Login a user, generates new token"""
+  Login(input: LoginInput!): LoginPayload
+
+  """Post Creation"""
+  PostCreation(input: PostCreationInput!): PostCreationPayload
+
+  """Create Comment Mutation"""
+  CreateComment(input: CreateCommentInput!): CreateCommentPayload
+
+  """Create Reply Mutation"""
+  CreateReply(input: CreateReplyInput!): CreateReplyPayload
+}
+
+input PostCreationInput {
+  content: String
+  author: String
+  clientMutationId: String
+}
+
+type PostCreationPayload {
+  post: PostType
+  clientMutationId: String
+}
+
+"""Post type"""
+type PostType {
+  author: User
+  content: String
+  likes: Int
+}
+
+"""General QueryType"""
+type Query {
+  loggedUser(token: String): User
+  myPosts(token: String): [PostType]
+  commentsOfPost(postId: String): [CommentType]
+}
+
+"""Reply type"""
+type ReplyType {
+  author: User
+  content: String
+  likes: Int
+  comment: String
+}
+
+"""User"""
+type User {
+  name: String
+  password: String
+  email: String
+  token: String
+  _id: String
+}
+
+input UserCreationInput {
+  name: String
+  password: String
+  email: String
+  clientMutationId: String
+}
+
+type UserCreationPayload {
+  user: User
+  clientMutationId: String
+}

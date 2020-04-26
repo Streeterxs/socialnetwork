@@ -6,7 +6,7 @@ import {
   useLazyLoadQuery
 } from 'react-relay/hooks';
 
-import { graphql } from 'relay-runtime';
+import graphql from 'babel-plugin-relay/macro';
 
 import environment from './relay/environment';
 

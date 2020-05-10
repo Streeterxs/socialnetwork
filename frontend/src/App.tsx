@@ -22,7 +22,9 @@ const loginMutation = graphql`
 `;
 
 const App = () => {
-  const test = useLazyLoadQuery(loginMutation, {});
+  const test = useLazyLoadQuery(loginMutation, {}, {
+    fetchPolicy: 'store-or-network'
+  });
   console.log(test)
   return (
     <div className="App">

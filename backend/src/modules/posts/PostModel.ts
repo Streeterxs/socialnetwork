@@ -1,10 +1,12 @@
 import mongoose, { Schema } from 'mongoose';
 import jsonwebtoken from 'jsonwebtoken';
 
+
 export interface IPost extends mongoose.Document {
     author: string;
     content: string;
     likes: number;
+    comments: string[]
 }
 
 export interface IPostModel extends mongoose.Model<IPost> {
@@ -26,6 +28,10 @@ const postSchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
+    },
+    comments: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
     }
 });
 

@@ -1,9 +1,8 @@
-import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } from 'graphql';
-import { commentLoader } from './CommentLoader';
+import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
 import userType from '../users/UserType';
-import ReplyType from '../reply/ReplyType';
+import { IComment } from './CommentModel';
 
-const CommentType = new GraphQLObjectType({
+const CommentType = new GraphQLObjectType<IComment>({
     name: 'CommentType',
     description: 'Comment type',
     fields: () => ({
@@ -12,15 +11,11 @@ const CommentType = new GraphQLObjectType({
         },
         content: {
             type: GraphQLString,
-            resolve: (comment) => commentLoader(comment, 'content')
+            resolve: (comment) => comment.content
         },
         likes: {
             type: GraphQLInt,
-            resolve: (comment) => commentLoader(comment, 'likes')
-        },
-        post: {
-            type: GraphQLString,
-            resolve: (comment) => commentLoader(comment, 'post')
+            resolve: (comment) => comment.likes
         }
     })
 });

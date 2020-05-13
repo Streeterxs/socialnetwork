@@ -6,8 +6,8 @@ import { connectionDefinitions, connectionArgs, connectionFromArray } from 'grap
 
 
 const userType = new GraphQLObjectType<IUser>({
-    name: 'User',
-    description: 'User',
+    name: 'UserType',
+    description: 'User type',
     fields: () => (
         {
             name: {

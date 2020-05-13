@@ -1,13 +1,9 @@
 import mongoose, { mongo } from 'mongoose';
 
-import { IUser } from '../users/UserModel';
-import { IReply } from '../reply/ReplyModel';
-
 export interface IComment extends mongoose.Document {
     author: string,
     content: string,
-    likes: number,
-    post: string
+    likes: number
 }
 
 export interface ICommentModel extends mongoose.Model<IComment> {
@@ -28,11 +24,6 @@ const commentSchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
-    },
-    post: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-        required: true
     }
 });
 

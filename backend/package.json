@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "tsc",
-    "prestart": "npm run build",
+    "build": "tsc --watch",
     "start": "nodemon --exec babel-node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

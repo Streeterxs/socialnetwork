@@ -29,10 +29,10 @@ const postSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
-    comments: {
+    comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
-    }
+    }]
 });
 
 postSchema.statics.findAuthorPosts = async (id: string) => {

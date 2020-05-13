@@ -7,9 +7,6 @@ const CreateReply = mutationWithClientMutationId({
     name: 'CreateReply',
     description: 'Create Reply Mutation',
     inputFields: {
-        author: {
-            type: GraphQLString
-        },
         content: {
             type: GraphQLString
         },
@@ -23,9 +20,9 @@ const CreateReply = mutationWithClientMutationId({
             resolve: (reply) => reply
         }
     },
-    mutateAndGetPayload: ({author, content, likes}) => {
+    mutateAndGetPayload: ({content, likes}, {loggedUser}) => {
         try {
-            const reply = new Reply({author, content, likes});
+            const reply = new Reply({author: loggedUser, content, likes});
             reply.save((err, doc) => {
                 console.log(err);
             });

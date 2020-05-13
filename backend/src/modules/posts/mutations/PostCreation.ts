@@ -9,9 +9,6 @@ const PostCreation = mutationWithClientMutationId({
     inputFields: {
         content: {
             type: GraphQLString
-        },
-        author: {
-            type: GraphQLString
         }
     },
     outputFields: {
@@ -20,9 +17,10 @@ const PostCreation = mutationWithClientMutationId({
             resolve: (post) => post
         }
     },
-    mutateAndGetPayload: async ({content, author}) => {
+    mutateAndGetPayload: async ({content}, {loggedUser}) => {
         try {
-            const postCreated = new Post({content, author});
+            const postCreated = new Post({content, author: loggedUser});
+            console.log(postCreated);
             await postCreated.save();
             return postCreated;
         } catch (err) {

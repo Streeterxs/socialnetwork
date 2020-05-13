@@ -10,9 +10,6 @@ const CreateComment = mutationWithClientMutationId({
     name: 'CreateComment',
     description: 'Create Comment Mutation',
     inputFields: {
-        author: {
-            type: GraphQLString
-        },
         content: {
             type: GraphQLString
         },
@@ -26,9 +23,9 @@ const CreateComment = mutationWithClientMutationId({
             resolve: (comment) => comment
         }
     },
-    mutateAndGetPayload: async ({author, content, post}) => {
+    mutateAndGetPayload: async ({content, post}, {loggedUser}) => {
         try {
-            const comment = new Comment({author, content, post});
+            const comment = new Comment({author: loggedUser, content, post});
             await comment.save();
             return comment;
         } catch (err) {

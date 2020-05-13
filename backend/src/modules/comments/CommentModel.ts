@@ -3,7 +3,8 @@ import mongoose, { mongo } from 'mongoose';
 export interface IComment extends mongoose.Document {
     author: string,
     content: string,
-    likes: number
+    likes: number,
+    replies: string[]
 }
 
 export interface ICommentModel extends mongoose.Model<IComment> {
@@ -24,7 +25,11 @@ const commentSchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
-    }
+    },
+    replies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Reply'
+    }]
 });
 
 commentSchema.statics.findCommentsForPost = async (postId: string) => {

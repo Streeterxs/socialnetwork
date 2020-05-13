@@ -1,11 +1,9 @@
 import mongoose from 'mongoose';
-import { IUser } from '../users/UserModel';
 
 export interface IReply extends mongoose.Document {
     author: string;
     content: string;
     likes: number;
-    comment: string;
 }
 
 const replySchema = new mongoose.Schema({
@@ -22,11 +20,6 @@ const replySchema = new mongoose.Schema({
         type: Number,
         required: false,
         default: 0
-    },
-    comment: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-        required: true
     }
 });
 

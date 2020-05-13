@@ -1,5 +1,5 @@
 import Reply, {IReply} from './ReplyModel';
 
-export const replyLoader = (reply: IReply, field: keyof IReply) => {
-    return reply[field];
+export const replyLoader = async (id: string) => {
+    return await Reply.find({_id: id});
 }

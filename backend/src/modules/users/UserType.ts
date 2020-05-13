@@ -3,6 +3,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 import { IUser } from './UserModel';
 import { userLoader, loadUser } from './UserLoader';
 import { connectionDefinitions, connectionArgs, connectionFromArray } from 'graphql-relay';
+import PostType from '../posts/PostType';
 
 
 const userType = new GraphQLObjectType<IUser>({
@@ -41,6 +42,17 @@ const userType = new GraphQLObjectType<IUser>({
                     )
                 }
             },
+            posts: {
+                type: PostConnection,
+                args: connectionArgs,
+                resolve: (user, args) => {
+                        console.log(user)
+                        return connectionFromArray(
+                            user.posts.map(id => loadUser(id)),
+                        args
+                    )
+                }
+            },
             _id: {
                 type: GraphQLString,
                 resolve: (user, _) => userLoader(user, '_id')
@@ -51,5 +63,8 @@ const userType = new GraphQLObjectType<IUser>({
 
 const {connectionType: UserConnection} =
   connectionDefinitions({nodeType: userType});
+
+export const {connectionType: PostConnection} =
+        connectionDefinitions({nodeType: PostType})
 
 export default userType;

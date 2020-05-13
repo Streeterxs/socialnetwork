@@ -9,6 +9,7 @@ export interface IUser extends mongoose.Document {
     email: string,
     tokens:[{token: string}],
     friends: string[],
+    posts: string[],
     generateAuthToken(): string,
     verifyAuthToken(): void
 }
@@ -44,6 +45,10 @@ const userSchema = new mongoose.Schema({
     friends: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
     }]
 });
 

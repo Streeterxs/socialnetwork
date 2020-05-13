@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
-import { replyLoader } from './ReplyLoader';
 import userType from '../users/UserType';
 import { IReply } from './ReplyModel';
+import { loadUser } from '../users/UserLoader';
 
 const ReplyType = new GraphQLObjectType<IReply>({
     name: 'ReplyType',
@@ -9,6 +9,7 @@ const ReplyType = new GraphQLObjectType<IReply>({
     fields: () => ({
         author: {
             type: userType,
+            resolve: (reply) => loadUser(reply.author)
         },
         content: {
             type: GraphQLString,

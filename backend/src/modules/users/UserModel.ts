@@ -15,6 +15,7 @@ export interface IUser extends mongoose.Document {
 
 export interface IUserModel extends mongoose.Model<IUser>{
     findByCredentials(email: string, password: string): IUser;
+    findByToken(token: string): IUser
 }
 
 const userSchema = new mongoose.Schema({
@@ -79,6 +80,16 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
         throw new Error('Invalid password');
+    }
+
+    return user;
+}
+
+userSchema.statics.findByToken = async (token: string) => {
+    const user = await User.findOne({tokens: {token}});
+    console.log('user: ', user);
+    if (!user) {
+        throw new Error('No user found');
     }
 
     return user;

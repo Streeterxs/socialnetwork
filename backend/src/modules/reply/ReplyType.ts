@@ -1,4 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
+import { globalIdField } from 'graphql-relay';
+
 import userType from '../users/UserType';
 import { IReply } from './ReplyModel';
 import { loadUser } from '../users/UserLoader';
@@ -8,6 +10,7 @@ const ReplyType = new GraphQLObjectType<IReply>({
     name: 'ReplyType',
     description: 'Reply type',
     fields: () => ({
+        id: globalIdField('Comment'),
         author: {
             type: userType,
             resolve: (reply) => loadUser(reply.author)

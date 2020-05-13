@@ -1,8 +1,8 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } from 'graphql';
+import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
 
 import userType from '../users/UserType';
 import { IPost } from './PostModel';
-import { connectionDefinitions, connectionArgs, connectionFromArray } from 'graphql-relay';
 import CommentType from '../comments/CommentType';
 import { commentLoader } from '../comments/CommentLoader';
 import { loadUser } from '../users/UserLoader';
@@ -12,6 +12,7 @@ const PostType = new GraphQLObjectType<IPost>({
     name: 'PostType',
     description: 'Post type',
     fields: () => ({
+        id: globalIdField('Post'),
         author: {
             type: userType,
             resolve: async (post) => await loadUser(post.author)

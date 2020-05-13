@@ -1,9 +1,7 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import Comment from '../CommentModel';
-import userType from '../../../modules/users/UserType';
-import PostType from '../../../modules/posts/PostType';
 import CommentType from '../CommentType';
 
 const CreateComment = mutationWithClientMutationId({

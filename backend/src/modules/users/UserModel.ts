@@ -93,9 +93,6 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
 userSchema.statics.findByToken = async (token: string) => {
     const user = await User.findOne({tokens: {token}});
     console.log('user: ', user);
-    if (!user) {
-        throw new Error('No user found');
-    }
 
     return user;
 }

@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
-import { connectionDefinitions, connectionArgs, connectionFromArray } from 'graphql-relay';
+import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
 
 import userType from '../users/UserType';
 import { IComment } from './CommentModel';
@@ -12,6 +12,7 @@ const CommentType = new GraphQLObjectType<IComment>({
     name: 'CommentType',
     description: 'Comment type',
     fields: () => ({
+        id: globalIdField('Comment'),
         author: {
             type: userType,
             resolve: (comment) => loadUser(comment.author)

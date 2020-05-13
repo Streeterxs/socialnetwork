@@ -4,15 +4,34 @@ schema {
 }
 
 """Comment type"""
-type CommentType {
-  author: User
+type CommentType implements Node {
+  """The ID of an object"""
+  id: ID!
+  author: UserType
   content: String
   likes: Int
-  post: String
+  replies(after: String, first: Int, before: String, last: Int): ReplyTypeConnection
+}
+
+"""A connection to a list of items."""
+type CommentTypeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CommentTypeEdge]
+}
+
+"""An edge in a connection."""
+type CommentTypeEdge {
+  """The item at the end of the edge"""
+  node: CommentType
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 input CreateCommentInput {
-  author: String
   content: String
   post: String
   clientMutationId: String
@@ -24,7 +43,6 @@ type CreateCommentPayload {
 }
 
 input CreateReplyInput {
-  author: String
   content: String
   likes: Int
   clientMutationId: String
@@ -42,7 +60,7 @@ input LoginInput {
 }
 
 type LoginPayload {
-  user: User
+  user: UserType
   clientMutationId: String
 }
 
@@ -64,9 +82,29 @@ type MutationType {
   CreateReply(input: CreateReplyInput!): CreateReplyPayload
 }
 
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
 input PostCreationInput {
   content: String
-  author: String
   clientMutationId: String
 }
 
@@ -76,34 +114,74 @@ type PostCreationPayload {
 }
 
 """Post type"""
-type PostType {
-  author: User
+type PostType implements Node {
+  """The ID of an object"""
+  id: ID!
+  author: UserType
   content: String
   likes: Int
+  comments(after: String, first: Int, before: String, last: Int): CommentTypeConnection
+}
+
+"""A connection to a list of items."""
+type PostTypeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostTypeEdge]
+}
+
+"""An edge in a connection."""
+type PostTypeEdge {
+  """The item at the end of the edge"""
+  node: PostType
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 """General QueryType"""
 type Query {
-  loggedUser(token: String): User
-  myPosts(token: String): [PostType]
-  commentsOfPost(postId: String): [CommentType]
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+  myPosts: PostTypeConnection!
 }
 
 """Reply type"""
-type ReplyType {
-  author: User
+type ReplyType implements Node {
+  """The ID of an object"""
+  id: ID!
+  author: UserType
   content: String
   likes: Int
-  comment: String
 }
 
-"""User"""
-type User {
-  name: String
-  password: String
-  email: String
-  token: String
-  _id: String
+"""A connection to a list of items."""
+type ReplyTypeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ReplyTypeEdge]
+}
+
+"""An edge in a connection."""
+type ReplyTypeEdge {
+  """The item at the end of the edge"""
+  node: ReplyType
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 input UserCreationInput {
@@ -114,6 +192,36 @@ input UserCreationInput {
 }
 
 type UserCreationPayload {
-  user: User
+  user: UserType
   clientMutationId: String
 }
+
+"""User type"""
+type UserType {
+  name: String
+  password: String
+  email: String
+  token: String
+  friends(after: String, first: Int, before: String, last: Int): UserTypeConnection
+  posts(after: String, first: Int, before: String, last: Int): PostTypeConnection
+  _id: String
+}
+
+"""A connection to a list of items."""
+type UserTypeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserTypeEdge]
+}
+
+"""An edge in a connection."""
+type UserTypeEdge {
+  """The item at the end of the edge"""
+  node: UserType
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+

@@ -6,6 +6,7 @@ import { IComment } from './CommentModel';
 import { loadUser } from '../users/UserLoader';
 import ReplyType from '../reply/ReplyType';
 import { replyLoader } from '../reply/ReplyLoader';
+import { nodeInterface } from '../../graphql/NodeDefinitions';
 
 const CommentType = new GraphQLObjectType<IComment>({
     name: 'CommentType',
@@ -31,7 +32,8 @@ const CommentType = new GraphQLObjectType<IComment>({
                 args
             )
         }
-    })
+    }),
+    interfaces: [nodeInterface]
 });
 
 const {connectionType: ReplyConnection} =

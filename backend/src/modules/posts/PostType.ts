@@ -6,6 +6,7 @@ import { connectionDefinitions, connectionArgs, connectionFromArray } from 'grap
 import CommentType from '../comments/CommentType';
 import { commentLoader } from '../comments/CommentLoader';
 import { loadUser } from '../users/UserLoader';
+import { nodeInterface } from '../../graphql/NodeDefinitions';
 
 const PostType = new GraphQLObjectType<IPost>({
     name: 'PostType',
@@ -31,7 +32,8 @@ const PostType = new GraphQLObjectType<IPost>({
                 args
             )
         }
-    })
+    }),
+    interfaces: [nodeInterface]
 })
 
 const {connectionType: CommentConnection} =

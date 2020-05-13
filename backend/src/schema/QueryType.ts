@@ -6,6 +6,8 @@ import userType from '../modules/users/UserType';
 import PostType from '../modules/posts/PostType';
 import CommentType from '../modules/comments/CommentType';
 import { commentsFromPostLoader } from '../modules/comments/CommentLoader';
+import { nodeField } from '../graphql/NodeDefinitions';
+import { nodesField } from '../graphql/NodeDefinitions';
 
 
 const QueryType = new GraphQLObjectType({
@@ -22,6 +24,8 @@ const QueryType = new GraphQLObjectType({
             resolve: (value, {token}) => loadLoggedUser(token)
         },
         myPosts: {
+            node: nodeField,
+            nodes: nodesField,
             type: GraphQLList(PostType),
             args: {
                 token: {
@@ -31,15 +35,6 @@ const QueryType = new GraphQLObjectType({
             resolve: (value, {token}) => {
                 loggedUserPosts(token);
             }
-        },
-        commentsOfPost: {
-            type: GraphQLList(CommentType),
-            args: {
-                postId: {
-                    type: GraphQLString
-                }
-            },
-            resolve: (value, {postId}) => commentsFromPostLoader(postId)
         }
     })
 });

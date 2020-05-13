@@ -1,7 +1,8 @@
 import userModel, { IUser } from './UserModel';
 
-const loadUser = (user: IUser, field: keyof IUser) => {
-    return user[field];
+const loadUser = async (id: string) => {
+    const user = await userModel.find({_id: id});
+    return user
 }
 
 const userLoader = (user: IUser, field: keyof IUser) => {

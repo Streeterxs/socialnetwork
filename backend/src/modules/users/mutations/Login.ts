@@ -23,8 +23,10 @@ const mutation = mutationWithClientMutationId({
     },
     mutateAndGetPayload: async ({email, password}) => {
         try {
+            console.log(email, password);
             const user = await User.findByCredentials(email, password);
             const token = await user.generateAuthToken();
+            console.log(user);
             return user;
         } catch (err) {
             console.log('entrou erro catch');

@@ -8,6 +8,7 @@ export interface IUser extends mongoose.Document {
     password: string,
     email: string,
     tokens:[{token: string}],
+    friends: string[],
     generateAuthToken(): string,
     verifyAuthToken(): void
 }

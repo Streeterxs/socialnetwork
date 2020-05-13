@@ -29,7 +29,7 @@ export const mutation = mutationWithClientMutationId({
             const returnNewUser = await newUser.save((err, doc) => {
                 console.log('error save: ', err);
             });
-            return newUser;
+            return returnNewUser;
         } catch (err) {
             console.log(err)
         }

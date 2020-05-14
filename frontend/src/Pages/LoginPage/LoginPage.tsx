@@ -1,7 +1,7 @@
 import React from 'react';
 import graphql from 'babel-plugin-relay/macro';
 
-import { LoginForm } from '../Components';
+import { LoginForm } from './Components';
 import { commitMutation } from 'react-relay';
 import environment from 'src/relay/environment';
 

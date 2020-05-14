@@ -23,7 +23,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css",
-    "start": "npm run relay && react-scripts start",
+    "start": "npm run relay && npm run tailwind:css && react-scripts start",
     "build": "npm run relay && react-scripts build",
     "relay": "yarn run relay-compiler --schema ./schema/schema.graphql --src ./src/ --watchman false $@  --language typescript"
   },

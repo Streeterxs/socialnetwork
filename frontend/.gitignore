@@ -25,3 +25,4 @@ yarn-error.log*
 
 #Graphql Generated
 __generated__
+index.css

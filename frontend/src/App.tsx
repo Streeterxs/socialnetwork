@@ -3,6 +3,7 @@ import { RelayEnvironmentProvider } from 'react-relay/hooks';
 
 import environment from './relay/environment';
 import Routes from './routes';
+import { Layout } from './Components';
 import './App.css';
 
 
@@ -10,7 +11,9 @@ import './App.css';
 const App = () => {
   return (
     <div className="App">
-      <Routes/>
+      <Layout>
+        <Routes/>
+      </Layout>
     </div>
   );
 }

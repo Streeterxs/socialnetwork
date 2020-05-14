@@ -1,35 +1,16 @@
 import React, {Suspense} from 'react';
-import './App.css';
-
-import {
-  RelayEnvironmentProvider,
-  useLazyLoadQuery
-} from 'react-relay/hooks';
-
-import graphql from 'babel-plugin-relay/macro';
+import { RelayEnvironmentProvider } from 'react-relay/hooks';
 
 import environment from './relay/environment';
+import Routes from './routes';
+import './App.css';
 
-const loginMutation = graphql`
-  mutation AppLoginMutation {
-    Login(input: {email: "afonso@afonso1", password: "12345678", clientMutationId: "1"}) {
-      user {
-        name
-        token
-      }
-    }
-  }
-`;
+
 
 const App = () => {
-  const res: any = useLazyLoadQuery(loginMutation, {}, {
-    fetchPolicy: 'store-or-network'
-  });
-  console.log(res);
-  localStorage.setItem('authToken', res.Login.user.token);
   return (
     <div className="App">
-      Begin
+      <Routes/>
     </div>
   );
 }

@@ -22,10 +22,11 @@ const loginMutation = graphql`
 `;
 
 const App = () => {
-  const test = useLazyLoadQuery(loginMutation, {}, {
+  const res: any = useLazyLoadQuery(loginMutation, {}, {
     fetchPolicy: 'store-or-network'
   });
-  console.log(test)
+  console.log(res);
+  localStorage.setItem('authToken', res.Login.user.token);
   return (
     <div className="App">
       Begin

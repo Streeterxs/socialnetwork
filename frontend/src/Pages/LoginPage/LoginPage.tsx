@@ -2,8 +2,7 @@ import React from 'react';
 import graphql from 'babel-plugin-relay/macro';
 
 import { LoginForm } from './Components';
-import { commitMutation } from 'react-relay';
-import environment from 'src/relay/environment';
+import { useMutation } from 'react-relay/lib/relay-experimental';
 
 const loginMutation = graphql`
   mutation LoginPageLoginMutation($email: String!, $password: String!) {
@@ -17,30 +16,30 @@ const loginMutation = graphql`
 `;
 
 const LoginPage = () => {
+    const [commit, isInFlight] = useMutation(loginMutation);
+
     let email = '';
     let password = '';
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const variables = {
             email,
             password
         }
-        const disposable = commitMutation(
-            environment,
-            {
-                mutation: loginMutation,
-                variables,
-                onCompleted: (response: any, errors) => {
-                    console.log(response);
-                    console.log(errors);
-                    localStorage.setItem('authToken', response.Login.user.token);
-                    alert('User logged in!');
-                },
-                onError: console.log
+        commit({
+            variables,
+            onCompleted: (data: any) => {
+                console.log(data)
             }
-            
+        })
+    }
+    if (isInFlight) {
+        return(
+            <div>
+                Loading...
+            </div>
         );
-        console.log('disposable: ', disposable);
     }
     return (
         <div>

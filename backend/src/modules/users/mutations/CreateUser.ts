@@ -20,18 +20,20 @@ export const mutation = mutationWithClientMutationId({
     },
     outputFields: {
         user: {
-            type: userType
+            type: userType,
+            resolve: (user) => user
         }
     },
     mutateAndGetPayload: async ({name, password, email}) => {
         try {
             const newUser = new userModel({name, password, email});
-            const returnNewUser = await newUser.save((err, doc) => {
-                console.log('error save: ', err);
-            });
+            console.log(newUser);
+            const returnNewUser = await newUser.save();
+            console.log('return new user: ', returnNewUser);
             return returnNewUser;
         } catch (err) {
             console.log(err)
+            return err;
         }
     }
 });

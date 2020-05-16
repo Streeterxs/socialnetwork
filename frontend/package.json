@@ -6,10 +6,6 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.36",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
     "babel-plugin-relay": "^9.0.0",
     "react": "0.0.0-experimental-e5d06e34b",
     "react-dom": "0.0.0-experimental-e5d06e34b",
@@ -43,7 +39,11 @@
     ]
   },
   "devDependencies": {
-    "@types/react-relay": "^7.0.3",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.36",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-relay": "^7.0.7",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^8.0.8",
     "autoprefixer": "^9.7.6",

@@ -66,13 +66,17 @@ userSchema.methods.generateAuthToken = async function() {
     return token;
 }
 
-userSchema.methods.verifyAuthToken = async function(callbackSuccess?: () => {}, callbackError?: () => {}) {
+userSchema.methods.verifyAuthToken = function(callbackSuccess?: () => {}, callbackError?: (error: any) => {}) {
     const actualToken = this.tokens[0].token;
     try {
         jsonwebtoken.verify(actualToken, process.env.JWT_KEY);
-        callbackSuccess();
+        if (callbackSuccess) {
+            callbackSuccess();
+        }
     } catch (err) {
-        callbackError();
+        if (callbackError) {
+            callbackError(err);
+        }
     }
 }
 
@@ -91,7 +95,9 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
 }
 
 userSchema.statics.findByToken = async (token: string) => {
-    const user = await User.findOne({tokens: {token}});
+    const jsonPayload: any = jsonwebtoken.decode(token);
+    console.log(jsonPayload);
+    const user = await User.findOne({_id: jsonPayload._id});
     console.log('user: ', user);
 
     return user;

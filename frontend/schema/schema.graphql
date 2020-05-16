@@ -154,6 +154,7 @@ type Query {
     """The IDs of objects"""
     ids: [ID!]!
   ): [Node]!
+  myself: UserType
   myPosts: PostTypeConnection!
 }
 

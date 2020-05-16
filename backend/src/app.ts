@@ -20,7 +20,9 @@ const app = Express();
 app.use(cors());
 
 const graphQLHttpSettings = async (req: any) => {
+    console.log(req.headers.authorization)
     const user: IUser = await getUser(req.headers.authorization);
+    console.log(user);
     return {
         graphql: true,
         schema: Schema,

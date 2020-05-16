@@ -2,12 +2,12 @@ import User from "./modules/users/UserModel";
 
 
 const getUser = async (token: string) => {
-    const user = await User.findByToken(token);
     try {
+        const user = await User.findByToken(token);
         if (user) {
             user.verifyAuthToken();
+            return user;
         }
-        return user;
     } catch(err) {
         throw new Error(err);
     }

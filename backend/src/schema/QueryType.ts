@@ -12,6 +12,12 @@ const QueryType = new GraphQLObjectType({
     fields: () => ({
         node: nodeField,
         nodes: nodesField,
+        myself: {
+            type: userType,
+            resolve: (value, args, {user}) => {
+                return user;
+            }
+        },
         myPosts: {
             type: GraphQLNonNull(PostConnection),
             resolve: (value, args, {user}) => {

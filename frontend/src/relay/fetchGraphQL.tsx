@@ -13,7 +13,7 @@ async function fetchGraphQL(request: RequestParameters, variables: Variables) {
       headers: {
         Accept: 'application/json',
         'Content-type': 'application/json',
-        Authorization: `${localStorage.getItem('authToken') ? 'Bearer ' + localStorage.getItem('authToken') : ''}`
+        Authorization: `${localStorage.getItem('authToken') ? localStorage.getItem('authToken') : ''}`
       },
       body: JSON.stringify({
         query: request.text,

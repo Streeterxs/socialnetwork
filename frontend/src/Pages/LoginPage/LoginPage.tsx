@@ -30,7 +30,8 @@ const LoginPage = () => {
         commit({
             variables,
             onCompleted: (data: any) => {
-                console.log(data)
+                console.log(data);
+                localStorage.setItem('authToken', data.Login.user.token);
             }
         })
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Post from './Post';
 
 import { useFragment } from 'react-relay/hooks';
@@ -27,11 +27,13 @@ const Posts = ({posts}: any) => {
                 Posts
             </div>
             <div>
-                {
-                    postsEdges.edges.map((postEdge: any) => (
-                        <Post post={postEdge}/>
-                    ))
-                }
+                <Suspense fallback="Loading..">
+                    {
+                        postsEdges.edges.map((postEdge: any) => (
+                            <Post post={postEdge}/>
+                        ))
+                    }
+                </Suspense>
             </div>
         </div>
     );

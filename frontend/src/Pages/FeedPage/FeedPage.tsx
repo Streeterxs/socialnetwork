@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {Posts, PostCreation} from './Components'
 import { useLazyLoadQuery } from 'react-relay/hooks';
 import graphql from 'babel-plugin-relay/macro';
@@ -43,11 +43,13 @@ const FeedPage = () => {
                 <PostCreation/>
             </div>
             <div>
-                {
-                    userPostsQuery && userPostsQuery.myPosts && userPostsQuery.myPosts.posts ?
-                    <Posts posts={userPostsQuery.myPosts.posts}/> :
-                    null
-                }
+                <Suspense fallback="loading...">
+                    {
+                        userPostsQuery && userPostsQuery.myPosts && userPostsQuery.myPosts.posts ?
+                        <Posts posts={userPostsQuery.myPosts.posts}/> :
+                        null
+                    }
+                </Suspense>
             </div>
         </div>
     );

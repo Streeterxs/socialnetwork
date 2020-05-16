@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Comments } from '../';
 
 import { useFragment } from 'react-relay/hooks';
@@ -23,7 +23,9 @@ const Post = ({post}: any) => {
                 Single Post...
             </div>
             <div>
-                <Comments/>
+                <Suspense fallback="loading">
+                    <Comments/>
+                </Suspense>
             </div>
         </div>
     );

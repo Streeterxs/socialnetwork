@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Reply, ReplyCreation } from './';
 
 const Replies = () => {
@@ -8,7 +8,10 @@ const Replies = () => {
                 Replies Component...
             </div>
             <div>
-                <Reply/>
+                <Suspense fallback="loaging...">
+                    <Reply/>
+                </Suspense>
+
             </div>
             <div>
                 <ReplyCreation/>

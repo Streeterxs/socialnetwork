@@ -25,26 +25,8 @@ import graphql from 'babel-plugin-relay/macro';
 const FeedPage = () => {
     const userPostsQuery: any = useLazyLoadQuery(graphql`
         query FeedPageMyselfQuery {
-            myself {
-                posts{
-                    ...PostsTypeFragment
-                }
-                friends {
-                    edges{
-                        cursor
-                        node {
-                            posts{
-                                ...PostsTypeFragment
-                            }
-                        }
-                    }
-                    pageInfo {
-                        startCursor
-                        endCursor
-                        hasNextPage
-                        hasPreviousPage
-                    }
-                }
+            myPosts {
+                ...PostsTypeFragment
             }
         }`, 
         {}, 
@@ -61,7 +43,11 @@ const FeedPage = () => {
                 <PostCreation/>
             </div>
             <div>
-                <Posts posts={userPostsQuery.myself.posts}/>
+                {
+                    userPostsQuery && userPostsQuery.myPosts && userPostsQuery.myPosts.posts ?
+                    <Posts posts={userPostsQuery.myPosts.posts}/> :
+                    null
+                }
             </div>
         </div>
     );

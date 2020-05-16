@@ -11,6 +11,7 @@ export interface IPost extends mongoose.Document {
 
 export interface IPostModel extends mongoose.Model<IPost> {
     findAuthorPosts(id: string): IPost[];
+    findByIdList(ids: string[]): IPost[];
     findLoggedUserPosts(token: string): IPost[];
 }
 
@@ -37,6 +38,11 @@ const postSchema = new mongoose.Schema({
 
 postSchema.statics.findAuthorPosts = async (id: string) => {
     const posts = await Post.find({author: id});
+    return posts;
+}
+
+postSchema.statics.findByIdList = async (ids: string[]) => {
+    const posts = await Post.find({author: {$in: ids}});
     return posts;
 }
 

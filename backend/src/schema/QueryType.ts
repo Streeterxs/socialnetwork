@@ -1,9 +1,10 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 
-import { postLoader } from '../modules/posts/PostLoader';
+import { postLoader, postsLoaderByAuthors } from '../modules/posts/PostLoader';
 import userType, { PostConnection } from '../modules/users/UserType';
 import { nodeField } from '../graphql/NodeDefinitions';
 import { nodesField } from '../graphql/NodeDefinitions';
+import { IUser } from '../modules/users/UserModel';
 
 
 const QueryType = new GraphQLObjectType({
@@ -19,10 +20,8 @@ const QueryType = new GraphQLObjectType({
             }
         },
         myPosts: {
-            type: GraphQLNonNull(PostConnection),
-            resolve: (value, args, {user}) => {
-                return user.posts.map((postId: string) => postLoader(postId))
-            }
+            type: PostConnection,
+            resolve: async (value, args, {user}) => postsLoaderByAuthors([user._id, ...user.friends])
         }
     })
 });

@@ -24,26 +24,17 @@ const Comments = ({comments}: {
     comments: any
 }) => {
     const commentsTypeFragmentReturned = useFragment(commentsTypeFragment, comments);
-    console.log('Comment List Return: ', commentsTypeFragmentReturned);
     return (
         <div>
-            <div>
-                Comments Component...
-            </div>
-            <div>
-                    {
-                        commentsTypeFragmentReturned && commentsTypeFragmentReturned.Comments && commentsTypeFragmentReturned.Comments.edges ?
-                        commentsTypeFragmentReturned.Comments.edges.map((edge: any, index: number) => (
-                            <Suspense key={index} fallback="loading...">
-                                <Comment comment={edge}/>
-                            </Suspense>
-                        )):
-                        null
-                    }
-            </div>
-            <div>
-                <CommentCreation/>
-            </div>
+                {
+                    commentsTypeFragmentReturned && commentsTypeFragmentReturned.Comments && commentsTypeFragmentReturned.Comments.edges ?
+                    commentsTypeFragmentReturned.Comments.edges.map((edge: any, index: number) => (
+                        <Suspense key={index} fallback="loading...">
+                            <Comment comment={edge}/>
+                        </Suspense>
+                    )):
+                    null
+                }
         </div>
     );
 };

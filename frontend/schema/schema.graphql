@@ -45,13 +45,13 @@ input CreateCommentInput {
 }
 
 type CreateCommentPayload {
-  post: CommentType
+  comment: CommentType
   clientMutationId: String
 }
 
 input CreateReplyInput {
   content: String
-  likes: Int
+  comment: String
   clientMutationId: String
 }
 

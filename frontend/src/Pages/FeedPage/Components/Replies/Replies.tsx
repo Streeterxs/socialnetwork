@@ -39,9 +39,6 @@ const Replies = ({replies}: any) => {
                 }
 
             </div>
-            <div>
-                <ReplyCreation/>
-            </div>
         </div>
 
     );

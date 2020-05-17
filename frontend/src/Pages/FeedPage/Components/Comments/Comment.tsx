@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { useFragment } from 'react-relay/hooks';
 import graphql from 'babel-plugin-relay/macro';
 
-import { Replies } from '../';
+import { Replies, ReplyCreation } from '../';
 
 const commentEdgeFragment = graphql`
 fragment CommentTypeFragment on CommentTypeEdge {
@@ -17,11 +17,33 @@ fragment CommentTypeFragment on CommentTypeEdge {
             ...RepliesTypeFragment
         }
     }
-}
-`
+}`;
+
+const commentReplyCreationMutation = graphql`
+    mutation CommentReplyCreationMutation ($content: String!, $comment: String!) {
+        CreateReply (input: {content: $content, comment: $comment, clientMutationId: "1"}) {
+            reply {
+                content,
+                author {
+                    name
+                }
+            }
+        }
+    }
+`;
 
 const Comment = ({comment}: any) => {
     const postEdge = useFragment(commentEdgeFragment, comment);
+
+    let replyContent = '';
+
+    const replyCreationFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const variables = {
+            content: replyContent
+        }
+        console.log(variables);
+    }
     return (
         <div>
             <div>
@@ -35,6 +57,7 @@ const Comment = ({comment}: any) => {
                         null
                     }
                 </Suspense>
+                <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/>
             </div>
         </div>
     );

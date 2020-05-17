@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.createRoot(
+ReactDOM.unstable_createRoot(
   document.getElementById('root') as HTMLElement
 ).render(
   <React.StrictMode>

@@ -4,8 +4,10 @@ export const postLoader = (id: string) => {
     return Post.findById(id);
 };
 
-export const postsLoaderByAuthors = (ids: string[]) => {
-    Post.findByIdList(ids);
+export const postsLoaderByAuthors = async (ids: string[]) => {
+    const postList = await Post.findByIdList(ids);
+    console.log(postList);
+    return postList
 }
 
 export const authorPostsLoader = async (id: string) => {

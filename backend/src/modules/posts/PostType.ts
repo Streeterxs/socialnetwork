@@ -3,7 +3,7 @@ import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdFie
 
 import userType from '../users/UserType';
 import { IPost } from './PostModel';
-import CommentType from '../comments/CommentType';
+import CommentType, { CommentConnection } from '../comments/CommentType';
 import { commentLoader } from '../comments/CommentLoader';
 import { loadUser } from '../users/UserLoader';
 import { nodeInterface } from '../../graphql/NodeDefinitions';
@@ -35,9 +35,23 @@ const PostType = new GraphQLObjectType<IPost>({
         }
     }),
     interfaces: [nodeInterface]
-})
+});
 
-const {connectionType: CommentConnection} =
-  connectionDefinitions({nodeType: CommentType});
+export const PostListType = new GraphQLObjectType<IPost[]>({
+    name: 'PostListType',
+    description: 'Post List type',
+    fields: () => ({
+        id: globalIdField('Post'),
+            posts: {
+                type: PostConnection,
+                args: connectionArgs,
+                resolve: (posts, args) => connectionFromArray(posts, args)
+            },
+    }),
+    interfaces: [nodeInterface]
+});
+
+export const {connectionType: PostConnection} =
+        connectionDefinitions({nodeType: PostType});
 
 export default PostType;

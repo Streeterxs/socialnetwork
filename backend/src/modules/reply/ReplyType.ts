@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
-import { globalIdField } from 'graphql-relay';
+import { globalIdField, connectionDefinitions, connectionArgs, connectionFromArray } from 'graphql-relay';
 
 import userType from '../users/UserType';
 import { IReply } from './ReplyModel';
@@ -10,7 +10,7 @@ const ReplyType = new GraphQLObjectType<IReply>({
     name: 'ReplyType',
     description: 'Reply type',
     fields: () => ({
-        id: globalIdField('Comment'),
+        id: globalIdField('Reply'),
         author: {
             type: userType,
             resolve: (reply) => loadUser(reply.author)
@@ -26,5 +26,22 @@ const ReplyType = new GraphQLObjectType<IReply>({
     }),
     interfaces: [nodeInterface]
 });
+
+export const ReplyListType = new GraphQLObjectType<IReply[]>({
+    name: 'ReplyListType',
+    description: 'Reply List type',
+    fields: () => ({
+        id: globalIdField('Reply'),
+            Replys: {
+                type: ReplyConnection,
+                args: connectionArgs,
+                resolve: (replies, args) => connectionFromArray(replies, args)
+            },
+    }),
+    interfaces: [nodeInterface]
+});
+
+export const {connectionType: ReplyConnection} =
+  connectionDefinitions({nodeType: ReplyType});
 
 export default ReplyType

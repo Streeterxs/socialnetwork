@@ -82,7 +82,6 @@ userSchema.methods.verifyAuthToken = function(callbackSuccess?: () => {}, callba
 
 userSchema.statics.findByCredentials = async (email: string, password: string) => {
     const user = await User.findOne({email});
-    console.log('user: ', user);
     if (!user) {
         throw new Error('Invalid login credentials');
     }
@@ -96,9 +95,7 @@ userSchema.statics.findByCredentials = async (email: string, password: string) =
 
 userSchema.statics.findByToken = async (token: string) => {
     const jsonPayload: any = jsonwebtoken.decode(token);
-    console.log(jsonPayload);
     const user = await User.findOne({_id: jsonPayload._id});
-    console.log('user: ', user);
 
     return user;
 }

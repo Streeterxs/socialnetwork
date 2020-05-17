@@ -2,6 +2,7 @@ import { GraphQLString, GraphQLInt } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import ReplyType from '../ReplyType';
 import Reply from '../ReplyModel';
+import { commentLoader } from '../../../modules/comments/CommentLoader';
 
 const CreateReply = mutationWithClientMutationId({
     name: 'CreateReply',
@@ -10,8 +11,8 @@ const CreateReply = mutationWithClientMutationId({
         content: {
             type: GraphQLString
         },
-        likes: {
-            type: GraphQLInt
+        comment: {
+            type: GraphQLString
         }
     },
     outputFields: {
@@ -20,12 +21,15 @@ const CreateReply = mutationWithClientMutationId({
             resolve: (reply) => reply
         }
     },
-    mutateAndGetPayload: ({content, likes}, {loggedUser}) => {
+    mutateAndGetPayload: async ({content, comment}, {user}) => {
         try {
-            const reply = new Reply({author: loggedUser, content, likes});
-            reply.save((err, doc) => {
+            const reply = new Reply({author: user.id, content});
+            await reply.save((err, doc) => {
                 console.log(err);
             });
+            const commentReturned = await commentLoader(comment);
+            commentReturned.replies.push(reply.id);
+            commentReturned.save();
             return reply;
         } catch (err) {
             console.log(err);

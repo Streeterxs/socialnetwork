@@ -3,6 +3,8 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 
 import Comment from '../CommentModel';
 import CommentType from '../CommentType';
+import { postLoader } from '../../../modules/posts/PostLoader';
+import { IUser } from '../../../modules/users/UserModel';
 
 const CreateComment = mutationWithClientMutationId({
     name: 'CreateComment',
@@ -16,15 +18,21 @@ const CreateComment = mutationWithClientMutationId({
         }
     },
     outputFields: {
-        post: {
+        comment: {
             type: CommentType,
             resolve: (comment) => comment
         }
     },
-    mutateAndGetPayload: async ({content, post}, {loggedUser}) => {
+    mutateAndGetPayload: async ({content, post} : {
+        content: string,
+        post: string
+    }, {user}: {user: IUser}) => {
         try {
-            const comment = new Comment({author: loggedUser, content, post});
+            const comment = new Comment({author: user.id, content});
             await comment.save();
+            const postFinded = await postLoader(post);
+            postFinded.comments.push(comment.id);
+            postFinded.save();
             return comment;
         } catch (err) {
             console.log(err);

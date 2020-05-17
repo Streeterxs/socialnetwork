@@ -6,21 +6,26 @@ import graphql from 'babel-plugin-relay/macro';
 
 
 const Posts = ({posts}: any) => {
-    const postsEdges: any = useFragment(graphql`
-        fragment PostsTypeFragment on PostTypeConnection {
-        edges {
-            ...PostTypeFragment
-        }
-        pageInfo {
-                startCursor
-                endCursor
-                hasNextPage
-                hasPreviousPage
+    const postListType: any = useFragment(graphql`
+        fragment PostsTypeFragment on PostListType {
+            posts {
+                edges {
+                    cursor,
+                    node {
+                        ...PostTypeFragment
+                    }
+                }
+                pageInfo {
+                    startCursor
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                }
+
             }
         }
     `,
     posts);
-    console.log(postsEdges);
     return (
         <div>
             <div>
@@ -29,9 +34,11 @@ const Posts = ({posts}: any) => {
             <div>
                 <Suspense fallback="Loading..">
                     {
-                        postsEdges.edges.map((postEdge: any) => (
-                            <Post post={postEdge}/>
-                        ))
+                        postListType && postListType.posts && postListType.posts.edges && postListType.posts.edges.length > 0 ?
+                        postListType.posts.edges.map((postEdge: any, index: number) => {
+                            return (<Post key={index} post={postEdge.node}/>)
+                        }) :
+                        null
                     }
                 </Suspense>
             </div>

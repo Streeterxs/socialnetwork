@@ -1,28 +1,28 @@
 import React, { Suspense } from 'react';
-import {Posts, PostCreation} from './Components'
 import { useLazyLoadQuery } from 'react-relay/hooks';
+
+import {Posts, PostCreation} from './Components'
 import graphql from 'babel-plugin-relay/macro';
+import { useMutation } from 'react-relay/lib/relay-experimental';
 
 
-/* friends {
-    edges{
-        cursor
-        node {
-            posts{
-                ...myFriedsPostsFragment
-            }
+const loginMutation = graphql`
+  mutation FeedPagePostCreationMutation($content: String!) {
+    PostCreation(input: {content: $content, clientMutationId: "1"}) {
+      post {
+        author {
+            name
         }
+        content
+        likes
+      }
     }
-    pageInfo {
-        startCursor
-        endCursor
-        hasNextPage
-        hasPreviousPage
-    }
-} */
+  }
+`;
 
 
 const FeedPage = () => {
+    const [commit, isInFlight] = useMutation(loginMutation);
     const userPostsQuery: any = useLazyLoadQuery(graphql`
         query FeedPageMyselfQuery {
             myPosts {
@@ -32,21 +32,37 @@ const FeedPage = () => {
         {}, 
         {fetchPolicy: 'store-or-network'}
     );
-
-    console.log(userPostsQuery);
+    let content = "";
+    const handlePostFormCreationSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const variables = {
+            content
+        }
+        console.log(variables);
+        commit({
+            variables,
+            onCompleted: (data: any) => {
+                console.log(data);
+            }
+        });
+    }
+    console.log('userPostsQuery: ', userPostsQuery);
     return (
         <div>
             <div>
                 Feed Page
             </div>
             <div>
-                <PostCreation/>
+                {
+                    isInFlight ? 'Loading' : null
+                }
+                <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
             </div>
             <div>
                 <Suspense fallback="loading...">
                     {
-                        userPostsQuery && userPostsQuery.myPosts && userPostsQuery.myPosts.posts ?
-                        <Posts posts={userPostsQuery.myPosts.posts}/> :
+                        userPostsQuery && userPostsQuery.myPosts ?
+                        <Posts posts={userPostsQuery.myPosts}/> :
                         null
                     }
                 </Suspense>

@@ -7,12 +7,9 @@ import graphql from 'babel-plugin-relay/macro';
 
 const Post = ({post}: any) => {
     const postEdge = useFragment(graphql`
-        fragment PostTypeFragment on PostTypeEdge {
-            cursor,
-            node {
-                content
-                likes
-            }
+        fragment PostTypeFragment on PostType {
+            content
+            likes
         }
     `,
     post);
@@ -20,7 +17,7 @@ const Post = ({post}: any) => {
     return (
         <div>
             <div>
-                Single Post...
+                {postEdge.content}
             </div>
             <div>
                 <Suspense fallback="loading">

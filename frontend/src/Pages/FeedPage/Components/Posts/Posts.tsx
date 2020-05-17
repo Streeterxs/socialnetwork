@@ -10,10 +10,7 @@ const Posts = ({posts}: any) => {
         fragment PostsTypeFragment on PostListType {
             posts {
                 edges {
-                    cursor,
-                    node {
-                        ...PostTypeFragment
-                    }
+                    ...PostTypeFragment
                 }
                 pageInfo {
                     startCursor
@@ -21,27 +18,23 @@ const Posts = ({posts}: any) => {
                     hasNextPage
                     hasPreviousPage
                 }
-
             }
         }
     `,
     posts);
     return (
         <div>
-            <div>
-                Posts
-            </div>
-            <div>
-                <Suspense fallback="Loading..">
-                    {
-                        postListType && postListType.posts && postListType.posts.edges && postListType.posts.edges.length > 0 ?
-                        postListType.posts.edges.map((postEdge: any, index: number) => {
-                            return (<Post key={index} post={postEdge.node}/>)
-                        }) :
-                        null
-                    }
-                </Suspense>
-            </div>
+            {
+                postListType && postListType.posts && postListType.posts.edges && postListType.posts.edges.length > 0 ?
+                postListType.posts.edges.map((postEdge: any, index: number) => {
+                    return (
+                        <Suspense key={index}  fallback="Loading..">
+                            <Post post={postEdge}/>
+                        </Suspense>
+                    )
+                }) :
+                null
+            }
         </div>
     );
 };

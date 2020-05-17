@@ -1,9 +1,26 @@
 import React from 'react';
 
-const Reply = () => {
+import graphql from 'babel-plugin-relay/macro';
+import { useFragment } from 'react-relay/hooks';
+
+const replyTypeFragment = graphql`
+    fragment ReplyTypeFragment on ReplyTypeEdge {
+        cursor
+        node{
+            author {
+                name
+            }
+            content
+            likes
+        }
+    }
+`;
+
+const Reply = ({reply}: any) => {
+    const replyFragmentReturn = useFragment(replyTypeFragment, reply);
     return (
         <div>
-            Reply Component...
+            {replyFragmentReturn.node.content}
         </div>
     );
 };

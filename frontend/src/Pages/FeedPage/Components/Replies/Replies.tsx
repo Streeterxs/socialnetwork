@@ -1,16 +1,42 @@
 import React, { Suspense } from 'react';
-import { Reply, ReplyCreation } from './';
+import graphql from 'babel-plugin-relay/macro';
 
-const Replies = () => {
+import { Reply, ReplyCreation } from './';
+import { useFragment } from 'react-relay/hooks';
+
+const repliesTypeFragment = graphql`
+    fragment RepliesTypeFragment on ReplyListType {
+        Replies {
+            edges {
+                ...ReplyTypeFragment
+            }
+            pageInfo {
+                startCursor
+                endCursor
+                hasNextPage
+                hasPreviousPage
+            }
+        }
+    }
+`;
+
+const Replies = ({replies}: any) => {
+    const repliesReturned = useFragment(repliesTypeFragment, replies);
     return (
         <div>
             <div>
                 Replies Component...
             </div>
             <div>
-                <Suspense fallback="loaging...">
-                    <Reply/>
-                </Suspense>
+                {
+                    repliesReturned && repliesReturned.Replies && repliesReturned.Replies.edges && repliesReturned.Replies.edges.length > 0 ?
+                    repliesReturned.Replies.edges.map((edge: any, index: number) => (
+                        <Suspense key={index} fallback="loaging...">
+                            <Reply reply={edge}/>
+                        </Suspense>
+                    )) :
+                    null
+                }
 
             </div>
             <div>

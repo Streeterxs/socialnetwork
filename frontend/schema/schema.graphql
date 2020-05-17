@@ -3,6 +3,13 @@ schema {
   mutation: MutationType
 }
 
+"""Comment list type"""
+type CommentListType implements Node {
+  """The ID of an object"""
+  id: ID!
+  Comments(after: String, first: Int, before: String, last: Int): CommentTypeConnection
+}
+
 """Comment type"""
 type CommentType implements Node {
   """The ID of an object"""
@@ -10,7 +17,7 @@ type CommentType implements Node {
   author: UserType
   content: String
   likes: Int
-  replies(after: String, first: Int, before: String, last: Int): ReplyTypeConnection
+  replies: ReplyListType
 }
 
 """A connection to a list of items."""
@@ -127,7 +134,7 @@ type PostType implements Node {
   author: UserType
   content: String
   likes: Int
-  comments(after: String, first: Int, before: String, last: Int): CommentTypeConnection
+  comments: CommentListType
 }
 
 """A connection to a list of items."""
@@ -163,6 +170,13 @@ type Query {
   ): [Node]!
   myself: UserType
   myPosts: PostListType
+}
+
+"""Reply List type"""
+type ReplyListType implements Node {
+  """The ID of an object"""
+  id: ID!
+  Replies(after: String, first: Int, before: String, last: Int): ReplyTypeConnection
 }
 
 """Reply type"""

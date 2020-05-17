@@ -3,7 +3,7 @@ import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdFie
 
 import userType from '../users/UserType';
 import { IPost } from './PostModel';
-import CommentType, { CommentConnection } from '../comments/CommentType';
+import CommentType, { CommentConnection, CommentListType } from '../comments/CommentType';
 import { commentLoader } from '../comments/CommentLoader';
 import { loadUser } from '../users/UserLoader';
 import { nodeInterface } from '../../graphql/NodeDefinitions';
@@ -26,12 +26,8 @@ const PostType = new GraphQLObjectType<IPost>({
             resolve: (post) => post.likes
         },
         comments: {
-            type: CommentConnection,
-            args: connectionArgs,
-            resolve: (post, args) => connectionFromArray(
-                post.comments.map(commentLoader),
-                args
-            )
+            type: CommentListType,
+            resolve: (post, args) => post.comments.map(commentLoader)
         }
     }),
     interfaces: [nodeInterface]

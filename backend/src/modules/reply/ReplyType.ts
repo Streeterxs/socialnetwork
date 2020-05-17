@@ -32,7 +32,7 @@ export const ReplyListType = new GraphQLObjectType<IReply[]>({
     description: 'Reply List type',
     fields: () => ({
         id: globalIdField('Reply'),
-            Replys: {
+            Replies: {
                 type: ReplyConnection,
                 args: connectionArgs,
                 resolve: (replies, args) => connectionFromArray(replies, args)

@@ -38,5 +38,9 @@ const graphQLHttpSettings = async (req: any) => {
 }
 
 app.use('/graphql', graphqlHTTP(graphQLHttpSettings));
+/* app.use('/graphql', graphqlHTTP({
+    schema: Schema,
+    graphiql: true
+})); */
 
 export default app;

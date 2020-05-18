@@ -1,7 +1,8 @@
 import Comment, {IComment} from './CommentModel';
 
 export const commentLoader = async (id: string) => {
-    return await Comment.findOne({_id: id});
+    const commentFounded = await Comment.findOne({_id: id});
+    return commentFounded;
 }
 
 export const commentsFromPostLoader = async (postId: string) => {

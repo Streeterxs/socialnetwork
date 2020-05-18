@@ -4,7 +4,7 @@ import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdFie
 import userType from '../users/UserType';
 import { IComment } from './CommentModel';
 import { loadUser } from '../users/UserLoader';
-import ReplyType, { ReplyConnection, ReplyListType } from '../reply/ReplyType';
+import ReplyType, { ReplyConnection } from '../reply/ReplyType';
 import { replyLoader } from '../reply/ReplyLoader';
 import { nodeInterface } from '../../graphql/NodeDefinitions';
 
@@ -26,23 +26,15 @@ const CommentType = new GraphQLObjectType<IComment>({
             resolve: (comment) => comment.likes
         },
         replies: {
-            type: ReplyListType,
-            resolve: (post, args) => post.replies.map(replyLoader)
+            type: ReplyConnection,
+            args: connectionArgs,
+            resolve: (comment, args) => {
+                    return connectionFromArray(
+                        comment.replies.map(replyLoader),
+                    args
+                )
+            }
         }
-    }),
-    interfaces: [nodeInterface]
-});
-
-export const CommentListType = new GraphQLObjectType<IComment[]>({
-    name: 'CommentListType',
-    description: 'Comment list type',
-    fields: () => ({
-        id: globalIdField('Comment'),
-            Comments: {
-                type: CommentConnection,
-                args: connectionArgs,
-                resolve: (comments, args) => connectionFromArray(comments, args)
-            },
     }),
     interfaces: [nodeInterface]
 });

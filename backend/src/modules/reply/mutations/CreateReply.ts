@@ -1,5 +1,5 @@
 import { GraphQLString, GraphQLInt } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, fromGlobalId } from 'graphql-relay';
 import ReplyType from '../ReplyType';
 import Reply from '../ReplyModel';
 import { commentLoader } from '../../../modules/comments/CommentLoader';
@@ -23,11 +23,10 @@ const CreateReply = mutationWithClientMutationId({
     },
     mutateAndGetPayload: async ({content, comment}, {user}) => {
         try {
+            const {type, id} = fromGlobalId(comment);
             const reply = new Reply({author: user.id, content});
-            await reply.save((err, doc) => {
-                console.log(err);
-            });
-            const commentReturned = await commentLoader(comment);
+            await reply.save();
+            const commentReturned = await commentLoader(id);
             commentReturned.replies.push(reply.id);
             commentReturned.save();
             return reply;

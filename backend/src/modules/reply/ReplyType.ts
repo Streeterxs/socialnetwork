@@ -27,20 +27,6 @@ const ReplyType = new GraphQLObjectType<IReply>({
     interfaces: [nodeInterface]
 });
 
-export const ReplyListType = new GraphQLObjectType<IReply[]>({
-    name: 'ReplyListType',
-    description: 'Reply List type',
-    fields: () => ({
-        id: globalIdField('Reply'),
-            Replies: {
-                type: ReplyConnection,
-                args: connectionArgs,
-                resolve: (replies, args) => connectionFromArray(replies, args)
-            },
-    }),
-    interfaces: [nodeInterface]
-});
-
 export const {connectionType: ReplyConnection} =
   connectionDefinitions({nodeType: ReplyType});
 

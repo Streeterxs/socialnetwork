@@ -1,5 +1,5 @@
 import { GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, fromGlobalId } from 'graphql-relay';
 
 import Comment from '../CommentModel';
 import CommentType from '../CommentType';
@@ -28,9 +28,11 @@ const CreateComment = mutationWithClientMutationId({
         post: string
     }, {user}: {user: IUser}) => {
         try {
+            const {type, id} = fromGlobalId(post);
+            const postId = id;
             const comment = new Comment({author: user.id, content});
             await comment.save();
-            const postFinded = await postLoader(post);
+            const postFinded = await postLoader(postId);
             postFinded.comments.push(comment.id);
             postFinded.save();
             return comment;

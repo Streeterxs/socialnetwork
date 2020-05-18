@@ -2,7 +2,6 @@ import userModel, { IUser } from './UserModel';
 
 const loadUser = async (id: string) => {
     const user = await userModel.findOne({_id: id});
-    console.log('loaduser: ', user);
     return user
 }
 

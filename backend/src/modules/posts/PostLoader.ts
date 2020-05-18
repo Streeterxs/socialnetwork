@@ -1,12 +1,13 @@
 import Post, { IPost } from './PostModel';
 
-export const postLoader = (id: string) => {
-    return Post.findById(id);
+export const postLoader = async (id: string) => {
+    const postFounded = await Post.findById(id);
+    return postFounded;
 };
 
 export const postsLoaderByAuthors = async (ids: string[]) => {
     const postList = await Post.findByIdList(ids);
-    console.log(postList);
+    Post.update({_id: postList[postList.length - 1].id}, {$set: {comments: []}});
     return postList
 }
 

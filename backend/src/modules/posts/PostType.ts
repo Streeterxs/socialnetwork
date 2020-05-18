@@ -1,9 +1,9 @@
-import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
 import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
 
 import userType from '../users/UserType';
 import { IPost } from './PostModel';
-import CommentType, { CommentConnection, CommentListType } from '../comments/CommentType';
+import CommentType, { CommentConnection } from '../comments/CommentType';
 import { commentLoader } from '../comments/CommentLoader';
 import { loadUser } from '../users/UserLoader';
 import { nodeInterface } from '../../graphql/NodeDefinitions';
@@ -26,8 +26,14 @@ const PostType = new GraphQLObjectType<IPost>({
             resolve: (post) => post.likes
         },
         comments: {
-            type: CommentListType,
-            resolve: (post, args) => post.comments.map(commentLoader)
+            type: CommentConnection,
+            args: connectionArgs,
+            resolve: (post, args) => {
+                    return connectionFromArray(
+                        post.comments.map(commentLoader),
+                    args
+                )
+            }
         }
     }),
     interfaces: [nodeInterface]

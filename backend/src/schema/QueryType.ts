@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull } from 'graphql';
 
-import { postLoader, postsLoaderByAuthors } from '../modules/posts/PostLoader';
+import { postsLoaderByAuthors } from '../modules/posts/PostLoader';
 import userType from '../modules/users/UserType';
 import { nodeField } from '../graphql/NodeDefinitions';
 import { nodesField } from '../graphql/NodeDefinitions';

@@ -2,13 +2,14 @@ import React, { Suspense } from 'react';
 import { Comments, CommentCreation } from '../';
 
 import { useFragment } from 'react-relay/hooks';
+import { useMutation } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
 
 
 
 const commentCreationMutation = graphql`
     mutation PostCommentCreationMutation($content: String!, $post: String!) {
-        CreateComment(input: {content: $content, post: $post, clientMutationId: "1"}) {
+        CreateComment(input: {content: $content, post: $post, clientMutationId: "2"}) {
             comment {
                 content
                 author {
@@ -37,19 +38,24 @@ fragment PostTypeFragment on PostTypeEdge {
 `
 
 const Post = ({post}: any) => {
-    const postEdge = useFragment(postTypeFragment,
-    post);
+    const [commit, isInFlight] = useMutation(commentCreationMutation);
+    const postEdge = useFragment(postTypeFragment, post);
 
     let commentContent = '';
     const commentCreation = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const variables = {
-            content: commentContent
+            content: commentContent,
+            post: postEdge.node.id
         }
-        console.log('variables for comment creation: ', variables);
+        commit({
+            variables,
+            onCompleted: (data: any) => {
+                console.log(data)
+            }
+        });
     }
-    console.log(postEdge);
     return (
         <div>
             <div>
@@ -58,12 +64,14 @@ const Post = ({post}: any) => {
             <div>
                 <Suspense fallback="loading">
                     {
-                        postEdge && postEdge.node && postEdge.node.comments && postEdge.node.comments.length > 0?
+                        postEdge && postEdge.node.comments ?
                         <Comments comments={postEdge.node.comments}/> :
-                        null
+                        null 
                     }
                 </Suspense>
-                <CommentCreation formSubmit={commentCreation} commentContentChange={newContent => {commentContent = newContent}}/>
+                <CommentCreation formSubmit={commentCreation} commentContentChange={newContent => {
+                    commentContent = newContent
+                    }}/>
             </div>
         </div>
     );

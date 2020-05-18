@@ -38,7 +38,6 @@ const FeedPage = () => {
         const variables = {
             content
         }
-        console.log(variables);
         commit({
             variables,
             onCompleted: (data: any) => {
@@ -46,7 +45,7 @@ const FeedPage = () => {
             }
         });
     }
-    console.log('userPostsQuery: ', userPostsQuery);
+
     return (
         <div>
             <div>

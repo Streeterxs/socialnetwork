@@ -16,7 +16,11 @@ const CommentCreation = ({formSubmit, commentContentChange}: {
         <form onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             concurrentFormSubmit(event);
         }}>
-            <input type="text" name="commentContent" onChange={(event) => commentContentChange(event.target.value)}/>
+            <input
+                type="text"
+                name="commentContent"
+                className="appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                onChange={(event) => commentContentChange(event.target.value)}/>
             <button hidden disabled={isPending} type="submit"></button>
             {isPending ? 'loading' : null}
         </form>

@@ -18,7 +18,11 @@ const PostCreation = ({contentChange, formSubmit}:
 
     return (
         <form onSubmit={postSubmitTransition}>
-            <input onChange={(event) => contentChange(event.target.value)} type="text" name="" id=""/>
+            <input
+                onChange={(event) => contentChange(event.target.value)}
+                type="text"
+                className="appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id=""/>
             <button hidden disabled={isPending} type="submit"></button>
             {isPending ? 'loading...' : null}
         </form>

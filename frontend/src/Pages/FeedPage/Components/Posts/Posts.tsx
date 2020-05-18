@@ -22,6 +22,7 @@ const Posts = ({posts}: any) => {
         }
     `,
     posts);
+
     return (
         <div>
             {

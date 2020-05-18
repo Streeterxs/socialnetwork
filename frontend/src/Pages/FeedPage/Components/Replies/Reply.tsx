@@ -6,7 +6,7 @@ import { useFragment } from 'react-relay/hooks';
 const replyTypeFragment = graphql`
     fragment ReplyTypeFragment on ReplyTypeEdge {
         cursor
-        node{
+        node {
             author {
                 name
             }

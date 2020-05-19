@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Comments, CommentCreation } from '../';
 
 import { useFragment } from 'react-relay/hooks';
@@ -21,27 +21,44 @@ const commentCreationMutation = graphql`
 `;
 
 const postTypeFragment = graphql`
-fragment PostTypeFragment on PostTypeEdge {
-    cursor
-    node {
-        id
-        author {
-            name
-        }
-        content
-        likes
-        comments {
-            ...CommentsTypeFragment
+    fragment PostTypeFragment on PostTypeEdge {
+        cursor
+        node {
+            id
+            author {
+                name
+            }
+            content
+            likes
+            userHasLiked
+            comments {
+                ...CommentsTypeFragment
+            }
         }
     }
-}
-`
+`;
+
+const postLikeMutation = graphql`
+    mutation PostLikeMutation($postId: String!) {
+        LikePost(input: {post: $postId, clientMutationId: "5"}) {
+            post {
+                likes
+                userHasLiked
+            }
+        }
+    }
+`;
 
 const Post = ({post}: any) => {
-    const [commit, isInFlight] = useMutation(commentCreationMutation);
-    const postEdge = useFragment(postTypeFragment, post);
-
     let commentContent = '';
+
+    const postEdge = useFragment(postTypeFragment, post);
+    const [likes, setLikes] = useState(postEdge.node.likes);
+    const [hasLiked, setHasLiked] = useState(postEdge.node.userHasLiked);
+    
+    const [commentCreationCommit, cmtCrtIsInFlight] = useMutation(commentCreationMutation);
+    const [likeCrtCommit, likeCrtIsInFlight] = useMutation(postLikeMutation)
+
     const commentCreation = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -49,17 +66,40 @@ const Post = ({post}: any) => {
             content: commentContent,
             post: postEdge.node.id
         }
-        commit({
+        commentCreationCommit({
+            variables,
+            onCompleted: ({LikePost}: any) => {
+                setLikes(LikePost.post.likes);
+                setHasLiked(LikePost.post.userHasLiked);
+                console.log(LikePost);
+            }
+        });
+    }
+
+    const likesHandler = () => {
+        setLikes(hasLiked ? likes - 1 : likes + 1);
+        setHasLiked(hasLiked ? false : true);
+
+        const variables = {
+            postId: postEdge.node.id
+        }
+
+        console.log(variables);
+
+        likeCrtCommit({
             variables,
             onCompleted: (data: any) => {
-                console.log(data)
+                console.log(data);
             }
         });
     }
     return (
         <div>
             <div>
-                {postEdge.node.content}
+                <div>
+                    {postEdge.node.content}
+                </div>
+                ({likes})<span onClick={likesHandler}>{hasLiked ? `Unlike` : 'Like'}</span>
             </div>
             <div>
                 <Suspense fallback="loading">

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useFragment } from 'react-relay/hooks';
 import { useMutation } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
@@ -15,6 +15,7 @@ fragment CommentTypeFragment on CommentTypeEdge {
         }
         content
         likes
+        userHasLiked
         replies {
             ...RepliesTypeFragment
         }
@@ -35,9 +36,24 @@ const commentReplyCreationMutation = graphql`
     }
 `;
 
+const commentLikeMutation = graphql `
+    mutation CommentLikeMutation($commentId: String!) {
+        LikeComment (input: {comment: $commentId, clientMutationId: "6"}) {
+            comment {
+                likes
+                userHasLiked
+            }
+        }
+    }
+`;
+
 const Comment = ({comment}: any) => {
-    const [commit, isInFlight] = useMutation(commentReplyCreationMutation);
     const commentEdge = useFragment(commentEdgeFragment, comment);
+    const [likes, setLikes] = useState(commentEdge.node ? commentEdge.node.likes : 0);
+    const [hasLiked, setHasLiked] = useState(commentEdge.node ? commentEdge.node.userHasLiked : false);
+
+    const [commitReplyCre, replyCreIsInFlight] = useMutation(commentReplyCreationMutation);
+    const [commitLikeMut, likeMutIsInFlight] = useMutation(commentLikeMutation);
 
     let replyContent = '';
 
@@ -48,7 +64,7 @@ const Comment = ({comment}: any) => {
             comment: commentEdge.node ? commentEdge.node.id : null
         }
         if (variables.comment && variables.content) {
-            commit({
+            commitReplyCre({
                 variables,
                 onCompleted: (data: any) => {
                     console.log(data);
@@ -57,10 +73,31 @@ const Comment = ({comment}: any) => {
         }
     };
 
+    const likeHandler = () => {
+        setLikes(hasLiked ? likes - 1 : likes + 1);
+        setHasLiked(hasLiked ? false : true);
+        const variables = {
+            commentId: commentEdge.node ? commentEdge.node.id : null
+        }
+        if (variables.commentId) {
+            commitLikeMut({
+                variables,
+                onCompleted: ({LikeComment}: any) => {
+                    setLikes(LikeComment.comment.likes);
+                    setHasLiked(LikeComment.comment.userHasLiked);
+                    console.log(LikeComment);
+                }
+            })
+        }
+    }
+
     return (
         <div>
             <div>
-                {commentEdge.node ? commentEdge.node.content : null}
+                <div>
+                    {commentEdge.node ? commentEdge.node.content : null}
+                </div>
+                ({likes})<span onClick={likeHandler}>{hasLiked ? 'Unlike' : 'Like'}</span>
             </div>
             <div>
                 <Suspense fallback="loading...">

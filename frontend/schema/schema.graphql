@@ -10,6 +10,7 @@ type CommentType implements Node {
   author: UserType
   content: String
   likes: Int
+  userHasLiked: Boolean
   replies(after: String, first: Int, before: String, last: Int): ReplyTypeConnection
 }
 
@@ -53,6 +54,36 @@ type CreateReplyPayload {
   clientMutationId: String
 }
 
+input LikeCommentInput {
+  comment: String
+  clientMutationId: String
+}
+
+type LikeCommentPayload {
+  comment: CommentType
+  clientMutationId: String
+}
+
+input LikePostInput {
+  post: String
+  clientMutationId: String
+}
+
+type LikePostPayload {
+  post: PostType
+  clientMutationId: String
+}
+
+input LikeReplayInput {
+  reply: String
+  clientMutationId: String
+}
+
+type LikeReplayPayload {
+  reply: ReplyType
+  clientMutationId: String
+}
+
 input LoginInput {
   email: String
   password: String
@@ -75,11 +106,20 @@ type MutationType {
   """Post Creation"""
   PostCreation(input: PostCreationInput!): PostCreationPayload
 
+  """Mutation for like handling for posts"""
+  LikePost(input: LikePostInput!): LikePostPayload
+
   """Create Comment Mutation"""
   CreateComment(input: CreateCommentInput!): CreateCommentPayload
 
+  """Update total likes for a comment type"""
+  LikeComment(input: LikeCommentInput!): LikeCommentPayload
+
   """Create Reply Mutation"""
   CreateReply(input: CreateReplyInput!): CreateReplyPayload
+
+  """Handle likes for replies"""
+  LikeReply(input: LikeReplayInput!): LikeReplayPayload
 }
 
 """An object with an ID"""
@@ -127,6 +167,7 @@ type PostType implements Node {
   author: UserType
   content: String
   likes: Int
+  userHasLiked: Boolean
   comments(after: String, first: Int, before: String, last: Int): CommentTypeConnection
 }
 
@@ -172,6 +213,7 @@ type ReplyType implements Node {
   author: UserType
   content: String
   likes: Int
+  userHasLiked: Boolean
 }
 
 """A connection to a list of items."""

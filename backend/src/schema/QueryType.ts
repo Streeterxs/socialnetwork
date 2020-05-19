@@ -16,7 +16,7 @@ const QueryType = new GraphQLObjectType({
         myself: {
             type: userType,
             resolve: (value, args, {user}) => {
-                return user;
+                return user ? user : null;
             }
         },
         myPosts: {

@@ -9,7 +9,7 @@ const getUser = async (token: string) => {
             return user;
         }
     } catch(err) {
-        throw new Error(err);
+        console.log(err);
     }
 }
 

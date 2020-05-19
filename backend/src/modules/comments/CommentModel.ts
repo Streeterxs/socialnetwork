@@ -3,7 +3,7 @@ import mongoose, { mongo } from 'mongoose';
 export interface IComment extends mongoose.Document {
     author: string,
     content: string,
-    likes: number,
+    likes: string[],
     replies: string[]
 }
 
@@ -21,11 +21,10 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Number,
-        required: false,
-        default: 0
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     replies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reply'

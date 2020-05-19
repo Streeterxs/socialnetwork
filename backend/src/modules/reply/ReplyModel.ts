@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export interface IReply extends mongoose.Document {
     author: string;
     content: string;
-    likes: number;
+    likes: string[];
 }
 
 const replySchema = new mongoose.Schema({
@@ -16,11 +16,10 @@ const replySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Number,
-        required: false,
-        default: 0
-    }
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 const Reply = mongoose.model<IReply>('Reply', replySchema);

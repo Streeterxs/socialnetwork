@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean } from 'graphql';
 import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
 
 import userType from '../users/UserType';
@@ -23,7 +23,11 @@ const CommentType = new GraphQLObjectType<IComment>({
         },
         likes: {
             type: GraphQLInt,
-            resolve: (comment) => comment.likes
+            resolve: (comment) => comment.likes.length
+        },
+        userHasLiked: {
+            type: GraphQLBoolean,
+            resolve: (comment, {user}) => comment.likes.includes(user.id)
         },
         replies: {
             type: ReplyConnection,

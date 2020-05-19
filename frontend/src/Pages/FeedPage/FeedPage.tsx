@@ -1,9 +1,10 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useLazyLoadQuery } from 'react-relay/hooks';
 
 import {Posts, PostCreation} from './Components'
 import graphql from 'babel-plugin-relay/macro';
 import { useMutation } from 'react-relay/lib/relay-experimental';
+import { useHistory } from 'react-router';
 
 
 const loginMutation = graphql`
@@ -21,7 +22,19 @@ const loginMutation = graphql`
 `;
 
 
-const FeedPage = () => {
+const FeedPage = ({userIsLogged} : {
+    userIsLogged: boolean
+}) => {
+    const history = useHistory();
+    useEffect(() => {
+        console.log('Entrou feed page');
+        console.log('loggedUser: ', userIsLogged);
+        if (userIsLogged) {
+            return;
+        }
+        history.push('/login');
+    }, [userIsLogged]);
+
     const [commit, isInFlight] = useMutation(loginMutation);
     const userPostsQuery: any = useLazyLoadQuery(graphql`
         query FeedPageMyselfQuery {
@@ -32,6 +45,7 @@ const FeedPage = () => {
         {}, 
         {fetchPolicy: 'store-or-network'}
     );
+
     let content = "";
     const handlePostFormCreationSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

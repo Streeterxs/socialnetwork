@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import graphql from 'babel-plugin-relay/macro';
+import { useMutation } from 'react-relay/lib/relay-experimental';
 
 import { LoginForm } from './Components';
-import { useMutation } from 'react-relay/lib/relay-experimental';
 
 const loginMutation = graphql`
   mutation LoginPageLoginMutation($email: String!, $password: String!) {
@@ -15,7 +16,11 @@ const loginMutation = graphql`
   }
 `;
 
-const LoginPage = () => {
+const LoginPage = ({setUserIsLogged}: {
+    setUserIsLogged: (userIsLogged: boolean) => void
+}) => {
+    const history = useHistory();
+
     const [commit, isInFlight] = useMutation(loginMutation);
 
     let email = '';
@@ -23,6 +28,8 @@ const LoginPage = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setUserIsLogged(true);
+
         const variables = {
             email,
             password
@@ -32,6 +39,8 @@ const LoginPage = () => {
             onCompleted: (data: any) => {
                 console.log(data);
                 localStorage.setItem('authToken', data.Login.user.token);
+                setUserIsLogged(data.Login.user.token ? true : false);
+                history.push('/');
             }
         })
     }

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import graphql from 'babel-plugin-relay/macro';
+import { useMutation } from 'react-relay/lib/relay-experimental';
 
 import { RegisterForm } from './Components';
-import { useMutation } from 'react-relay/lib/relay-experimental';
 
 const registerMutation = graphql`
   mutation RegisterPageLoginMutation($name: String!, $email: String!, $password: String!) {
@@ -17,24 +18,27 @@ const registerMutation = graphql`
 
 
 const RegisterPage = () => {
+  const history = useHistory();
+
   const [commit, isInFlight] = useMutation(registerMutation);
   let name = '';
     let email = '';
     let password = '';
     const handleFormSubmition = (event: React.FormEvent<HTMLFormElement>) => {
-      console.log(name);
-      console.log(email);
-      console.log(password);
+
       event.preventDefault();
+
       const variables = {
           name,
           email,
           password
       };
+
       commit({
         variables,
         onCompleted(data: any) {
           console.log(data);
+          history.push('/login');
         },
       });
     }

@@ -25,7 +25,7 @@ const ReplyType = new GraphQLObjectType<IReply>({
         },
         userHasLiked: {
             type: GraphQLBoolean,
-            resolve: (reply, {user}) => reply.likes.includes(user.id)
+            resolve: (reply, args, {user}) => reply.likes.includes(user.id)
         }
     }),
     interfaces: [nodeInterface]

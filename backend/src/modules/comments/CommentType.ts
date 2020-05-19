@@ -4,7 +4,7 @@ import { connectionDefinitions, connectionArgs, connectionFromArray, globalIdFie
 import userType from '../users/UserType';
 import { IComment } from './CommentModel';
 import { loadUser } from '../users/UserLoader';
-import ReplyType, { ReplyConnection } from '../reply/ReplyType';
+import { ReplyConnection } from '../reply/ReplyType';
 import { replyLoader } from '../reply/ReplyLoader';
 import { nodeInterface } from '../../graphql/NodeDefinitions';
 
@@ -27,7 +27,7 @@ const CommentType = new GraphQLObjectType<IComment>({
         },
         userHasLiked: {
             type: GraphQLBoolean,
-            resolve: (comment, {user}) => comment.likes.includes(user.id)
+            resolve: (comment, args, {user}) => comment.likes.includes(user.id)
         },
         replies: {
             type: ReplyConnection,

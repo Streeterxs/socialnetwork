@@ -1,4 +1,4 @@
-import { mutationWithClientMutationId } from "graphql-relay";
+import { mutationWithClientMutationId, fromGlobalId } from "graphql-relay";
 import { GraphQLString } from "graphql";
 import ReplyType from "../ReplyType";
 import { IUser } from "../../../modules/users/UserModel";
@@ -14,12 +14,15 @@ const LikeReply = mutationWithClientMutationId({
     },
     outputFields: {
         reply: {
-            type: ReplyType
+            type: ReplyType,
+            resolve: (reply) => reply
         }
     },
     mutateAndGetPayload: async ({reply}: {reply: string}, {user}: {user: IUser}) => {
         try {
-            const replyFounded = await Reply.findById(reply);
+            const {type, id} = fromGlobalId(reply);
+            const replyId = id;
+            const replyFounded = await Reply.findById(replyId);
             if (replyFounded.likes.includes(user.id)) {
                 const indexOf = replyFounded.likes.indexOf(user.id);
                 replyFounded.likes.splice(indexOf, 1);

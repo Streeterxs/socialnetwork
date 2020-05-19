@@ -1,4 +1,4 @@
-import { mutationWithClientMutationId } from "graphql-relay";
+import { mutationWithClientMutationId, fromGlobalId } from "graphql-relay";
 import { GraphQLString } from "graphql";
 
 import CommentType from "../CommentType";
@@ -15,12 +15,15 @@ const LikeComment = mutationWithClientMutationId({
     },
     outputFields: {
         comment: {
-            type: CommentType
+            type: CommentType,
+            resolve: (comment) => comment
         }
     },
     mutateAndGetPayload: async ({comment}, {user}: {user: IUser}) => {
         try {
-            const commentFound = await Comment.findOne({_id: comment});
+            const {type, id} = fromGlobalId(comment);
+            const commentId = id;
+            const commentFound = await Comment.findOne({_id: commentId});
             if (commentFound.likes.includes(user.id)) {
                 const indexOf = commentFound.likes.indexOf(user.id);
                 commentFound.likes.splice(indexOf, 1);

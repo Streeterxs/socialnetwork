@@ -1,9 +1,9 @@
-import { mutationWithClientMutationId } from "graphql-relay";
+import { mutationWithClientMutationId, fromGlobalId } from "graphql-relay";
 import { GraphQLString } from "graphql";
 
 import PostType from "../PostType";
 import { IUser } from "../../../modules/users/UserModel";
-import Post from "../PostModel";
+import { postLoader } from "../PostLoader";
 
 const LikePost = mutationWithClientMutationId({
     name: 'LikePost',
@@ -15,19 +15,22 @@ const LikePost = mutationWithClientMutationId({
     },
     outputFields: {
         post: {
-            type: PostType
+            type: PostType,
+            resolve: (post) => post
         }
     },
     mutateAndGetPayload: async ({post}: {post: string}, {user}: {user: IUser}) => {
         try {
-            const postFounded = await Post.findById(post);
+            const {type, id} = fromGlobalId(post);
+            const postId = id;
+            const postFounded = await postLoader(postId);
             if (postFounded.likes.includes(user.id)) {
                 const indexOf = postFounded.likes.indexOf(user.id);
                 postFounded.likes.splice(indexOf, 1);
                 await postFounded.save();
                 return postFounded;
             }
-            postFounded.likes.push(user.id);
+            postFounded.likes.push(user._id);
             await postFounded.save();
             return postFounded;
         } catch(err) {

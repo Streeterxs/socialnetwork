@@ -19,7 +19,7 @@ const CommentCreation = ({formSubmit, commentContentChange}: {
             <input
                 type="text"
                 name="commentContent"
-                className="placeholder-white appearance-none block w-full bg-gray-500 text-gray-700 border border-gray-200 py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="placeholder-white rounded-b-lg appearance-none text-white block w-full bg-gray-500 border border-gray-200 py-3 px-4 leading-tight focus:outline-none focus:border-gray-500"
                 placeholder="Comment..."
                 onChange={(event) => commentContentChange(event.target.value)}/>
             <button hidden disabled={isPending} type="submit"></button>

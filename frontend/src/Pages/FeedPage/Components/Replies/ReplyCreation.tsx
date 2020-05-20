@@ -17,7 +17,7 @@ const ReplyCreation = ({formSubmit, replyContentChange}: {
         <form className="w-full" onSubmit={replyCreationSubmitTransition}>
             <input
                 type="text"
-                className="placeholder-white w-full appearance-none block bg-gray-500 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="placeholder-white w-full appearance-none block bg-gray-500 text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                 placeholder="Reply..."
                 onChange={event => replyContentChange(event.target.value)}/>
             <button hidden type="submit" disabled={isPending}></button>

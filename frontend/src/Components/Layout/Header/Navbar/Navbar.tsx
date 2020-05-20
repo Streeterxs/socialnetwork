@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({userIsLogged, handleLogoutLogin}: {
     userIsLogged: boolean,
@@ -6,9 +7,11 @@ const Navbar = ({userIsLogged, handleLogoutLogin}: {
 }) => {
 
     return (
-        <nav className="flex items-center justify-between flex-wrap bg-gray-100 p-6">
+        <nav className="flex items-center justify-between w-full flex-wrap bg-gray-100 p-6">
             <div className="flex items-center flex-shrink-0 text-white mr-6">
-                <span className="font-semibold text-xl text-teal-500 tracking-tight">Social Network Example</span>
+                <Link to="/">
+                    <span className="font-semibold text-xl cursor-pointer text-teal-500 tracking-tight">Social Network Example</span>
+                </Link>
             </div>
             <div className="block lg:hidden">
                 <button className="flex items-center px-3 py-2 border rounded text-teal-500 border-teal-700 hover:text-white hover:border-white">

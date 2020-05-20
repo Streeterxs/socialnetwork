@@ -5,11 +5,13 @@ import {Header, Footer} from './';
 const Layout = ({children, userIsLogged, handleLogoutLogin}: any) => {
 
     return (
-        <React.Fragment>
+        <div className="min-h-screen w-full flex flex-col items-center justify-between">
             <Header userIsLogged={userIsLogged} handleLogoutLogin={handleLogoutLogin}/>
+            <div className="my-auto w-full">
                 {children}
+            </div>
             <Footer/>
-        </React.Fragment>
+        </div>
     )
 }
 

@@ -6,16 +6,14 @@ const routes = ({userIsLogged, setUserIsLogged}: {
     userIsLogged: boolean,
     setUserIsLogged: (userIsLogged: boolean) => void
 }) => (
-    <BrowserRouter>
-        <Switch>
-            <Route path="/" exact render={(props) => <FeedPage {...props} userIsLogged={userIsLogged}/>}/>
-            <Route path="/login" render={(props)=> <LoginPage {...props} setUserIsLogged={setUserIsLogged} />}/>
-            <Route path="/register" component={RegisterPage}/>
-            {/* 
-            <Route path="/profile" component={Profile}/>
-            <Route path="/incidents/new" component={NewIncident}/> */}
-        </Switch>
-    </BrowserRouter>
+    <Switch>
+        <Route path="/" exact render={(props) => <FeedPage {...props} userIsLogged={userIsLogged}/>}/>
+        <Route path="/login" render={(props)=> <LoginPage {...props} setUserIsLogged={setUserIsLogged} />}/>
+        <Route path="/register" component={RegisterPage}/>
+        {/* 
+        <Route path="/profile" component={Profile}/>
+        <Route path="/incidents/new" component={NewIncident}/> */}
+    </Switch>
 )
 
 export default routes;

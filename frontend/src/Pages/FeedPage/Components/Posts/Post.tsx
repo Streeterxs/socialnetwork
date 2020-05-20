@@ -68,10 +68,8 @@ const Post = ({post}: any) => {
         }
         commentCreationCommit({
             variables,
-            onCompleted: ({LikePost}: any) => {
-                setLikes(LikePost.post.likes);
-                setHasLiked(LikePost.post.userHasLiked);
-                console.log(LikePost);
+            onCompleted: (data: any) => {
+                console.log(data);
             }
         });
     }
@@ -88,8 +86,9 @@ const Post = ({post}: any) => {
 
         likeCrtCommit({
             variables,
-            onCompleted: (data: any) => {
-                console.log(data);
+            onCompleted: ({LikePost}: any) => {
+                setLikes(LikePost.post.likes);
+                setHasLiked(LikePost.post.userHasLiked);
             }
         });
     }

@@ -22,7 +22,9 @@ const App = () => {
     <div className="App">
       <BrowserRouter>
         <Layout handleLogoutLogin={handleLogoutLogin} userIsLogged={userIsLogged}>
-          <Routes userIsLogged={userIsLogged} setUserIsLogged={setUserIsLogged}/>
+          <Suspense fallback={'Loading...'}>
+            <Routes userIsLogged={userIsLogged} setUserIsLogged={setUserIsLogged}/>
+          </Suspense>
         </Layout>
       </BrowserRouter>
     </div>
@@ -31,9 +33,7 @@ const App = () => {
 
 const AppRoot = () => (
   <RelayEnvironmentProvider environment={environment}>
-    <Suspense fallback={'Loading...'}>
-      <App/>
-    </Suspense>
+    <App/>
   </RelayEnvironmentProvider>
 )
 

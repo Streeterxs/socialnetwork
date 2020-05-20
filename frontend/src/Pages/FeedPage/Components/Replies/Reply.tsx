@@ -15,6 +15,8 @@ const replyTypeFragment = graphql`
             content
             likes
             userHasLiked
+            createdAt
+            updatedAt
         }
     }
 `;

@@ -11,6 +11,8 @@ type CommentType implements Node {
   content: String
   likes: Int
   userHasLiked: Boolean
+  createdAt: String
+  updatedAt: String
   replies(after: String, first: Int, before: String, last: Int): ReplyTypeConnection
 }
 
@@ -168,6 +170,8 @@ type PostType implements Node {
   content: String
   likes: Int
   userHasLiked: Boolean
+  createdAt: String
+  updatedAt: String
   comments(after: String, first: Int, before: String, last: Int): CommentTypeConnection
 }
 
@@ -212,6 +216,8 @@ type ReplyType implements Node {
   id: ID!
   author: UserType
   content: String
+  createdAt: String
+  updatedAt: String
   likes: Int
   userHasLiked: Boolean
 }
@@ -251,6 +257,8 @@ type UserType {
   name: String
   password: String
   email: String
+  createdAt: String
+  updatedAt: String
   token: String
   friends(after: String, first: Int, before: String, last: Int): UserTypeConnection
   posts(after: String, first: Int, before: String, last: Int): PostTypeConnection

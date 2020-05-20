@@ -34,6 +34,8 @@ const postTypeFragment = graphql`
             comments {
                 ...CommentsTypeFragment
             }
+            createdAt
+            updatedAt
         }
     }
 `;

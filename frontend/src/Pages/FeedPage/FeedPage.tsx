@@ -61,24 +61,23 @@ const FeedPage = ({userIsLogged} : {
     }
 
     return (
-        <div>
-            <div>
-                Feed Page
-            </div>
-            <div>
-                {
-                    isInFlight ? 'Loading' : null
-                }
-                <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
-            </div>
-            <div>
-                <Suspense fallback="loading...">
+        <div className="flex items-center justify-center">
+            <div className="w-8/12">
+                <div className="w-full mb-5">
                     {
-                        userPostsQuery && userPostsQuery.myPosts ?
-                        <Posts posts={userPostsQuery.myPosts}/> :
-                        null
+                        isInFlight ? 'Loading' : null
                     }
-                </Suspense>
+                    <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
+                </div>
+                <div>
+                    <Suspense fallback="loading...">
+                        {
+                            userPostsQuery && userPostsQuery.myPosts ?
+                            <Posts posts={userPostsQuery.myPosts}/> :
+                            null
+                        }
+                    </Suspense>
+                </div>
             </div>
         </div>
     );

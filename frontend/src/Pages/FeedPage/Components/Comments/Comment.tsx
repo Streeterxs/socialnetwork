@@ -19,6 +19,8 @@ fragment CommentTypeFragment on CommentTypeEdge {
         replies {
             ...RepliesTypeFragment
         }
+        createdAt
+        updatedAt
     }
     
 }`;

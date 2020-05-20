@@ -20,6 +20,8 @@ const replySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }]
+}, {
+    timestamps: true
 });
 
 const Reply = mongoose.model<IReply>('Reply', replySchema);

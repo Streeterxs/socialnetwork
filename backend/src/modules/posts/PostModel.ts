@@ -33,21 +33,23 @@ const postSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }]
+}, {
+    timestamps: true
 });
 
 postSchema.statics.findAuthorPosts = async (id: string) => {
-    const posts = await Post.find({author: id});
+    const posts = await Post.find({author: id}).sort({createdAt: -1});
     return posts;
 }
 
 postSchema.statics.findByIdList = async (ids: string[]) => {
-    const posts = await Post.find({author: {$in: ids}});
+    const posts = await Post.find({author: {$in: ids}}).sort({createdAt: -1});
     return posts;
 }
 
 postSchema.statics.findLoggedUserPosts = async (token: string) => {
     const jsonPayload: any = jsonwebtoken.decode(token);
-    return await Post.find({author: jsonPayload._id});
+    return await Post.find({author: jsonPayload._id}).sort({createdAt: -1});
 }
 
 

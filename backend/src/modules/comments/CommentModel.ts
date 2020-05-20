@@ -29,10 +29,12 @@ const commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reply'
     }]
+}, {
+    timestamps: true
 });
 
 commentSchema.statics.findCommentsForPost = async (postId: string) => {
-    const commentsOfPost = await Comment.find({post: postId});
+    const commentsOfPost = await Comment.find({post: postId}).sort({createdAt: 1});
     return commentsOfPost;
 };
 

@@ -50,6 +50,8 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post'
     }]
+}, {
+    timestamps: true
 });
 
 userSchema.pre<IUser>('save', async function (next) {

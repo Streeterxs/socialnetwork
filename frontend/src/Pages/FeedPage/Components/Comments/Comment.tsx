@@ -3,6 +3,9 @@ import { useFragment } from 'react-relay/hooks';
 import { useMutation } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+
 import { Replies, ReplyCreation } from '../';
 
 const commentEdgeFragment = graphql`
@@ -54,6 +57,8 @@ const Comment = ({comment}: any) => {
     const [likes, setLikes] = useState(commentEdge.node ? commentEdge.node.likes : 0);
     const [hasLiked, setHasLiked] = useState(commentEdge.node ? commentEdge.node.userHasLiked : false);
 
+    const [isReplying, setReplying] = useState(false);
+
     const [commitReplyCre, replyCreIsInFlight] = useMutation(commentReplyCreationMutation);
     const [commitLikeMut, likeMutIsInFlight] = useMutation(commentLikeMutation);
 
@@ -61,6 +66,7 @@ const Comment = ({comment}: any) => {
 
     const replyCreationFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        replyingHandler();
         const variables = {
             content: replyContent,
             comment: commentEdge.node ? commentEdge.node.id : null
@@ -93,27 +99,53 @@ const Comment = ({comment}: any) => {
         }
     }
 
+    const replyingHandler = () => {
+        setReplying(isReplying ? false : true);
+    }
+
     return (
-        <div>
-            <div>
+        <div className="w-full">
+            <div className="my-2">
                 <div>
-                    {commentEdge.node ? commentEdge.node.content : null}
+                    <p className="text-gray-800 text-base">
+                        {commentEdge.node ? commentEdge.node.content : null}
+                    </p>
                 </div>
-                ({likes})<span onClick={likeHandler}>{hasLiked ? 'Unlike' : 'Like'}</span>
+                <div className="mb-2">
+                    <span className="text-teal-600 mr-2">
+                        <FontAwesomeIcon icon={faThumbsUp} /> {likes}
+                    </span>
+                    <span className={"cursor-pointer text-gray-800 " + (hasLiked ? 'text-teal-600' : '')} onClick={likeHandler}>
+                        {
+                            hasLiked ?
+                            <>Liked</> :
+                            <>Like</>
+                        }
+                    </span>
+                    <span className={"cursor-pointer text-gray-800 mx-2 " + (isReplying ? 'text-teal-700' : '')} onClick={replyingHandler}>
+                        {
+                            isReplying ?
+                            <>Replying</> :
+                            <>Reply</>
+                        }
+                    </span>
+                </div>
             </div>
-            <div>
-                <Suspense fallback="loading...">
-                    {
-                        commentEdge && commentEdge.node && commentEdge.node.replies ?
-                        <Replies replies={commentEdge.node.replies}/> :
-                        null
-                    }
-                </Suspense>
-                    {
-                        commentEdge && commentEdge.node ?
-                        <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/> :
-                        null
-                    }
+            <div className="px-6">
+                <div className="mb-4">
+                    <Suspense fallback="loading...">
+                        {
+                            commentEdge && commentEdge.node && commentEdge.node.replies ?
+                            <Replies replies={commentEdge.node.replies}/> :
+                            null
+                        }
+                    </Suspense>
+                </div>
+                {
+                    isReplying && commentEdge && commentEdge.node ?
+                    <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/> :
+                    null
+                }
             </div>
         </div>
     );

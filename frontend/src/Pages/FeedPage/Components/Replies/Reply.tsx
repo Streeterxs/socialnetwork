@@ -4,6 +4,9 @@ import { useMutation } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
 import { useFragment } from 'react-relay/hooks';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
+
 const replyTypeFragment = graphql`
     fragment ReplyTypeFragment on ReplyTypeEdge {
         cursor
@@ -58,11 +61,24 @@ const Reply = ({reply}: any) => {
     }
 
     return (
-        <div>
+        <div className="w-full my-1">
             <div>
-                {replyFragmentReturn.node.content}
+                <p className="text-gray-800 text-base">
+                    {replyFragmentReturn.node.content}
+                </p>
             </div>
-            ({likes})<span onClick={handleLike}>{hasLiked ? 'Unlike' : 'Like'}</span>
+            <div className="mb-2">
+                <span className="text-teal-600 mr-2">
+                    <FontAwesomeIcon icon={faThumbsUp} /> {likes}
+                </span>
+                <span className={"cursor-pointer text-gray-800 " + (hasLiked ? 'text-teal-600' : '')} onClick={handleLike}>
+                    {
+                        hasLiked ?
+                        <>Liked</> :
+                        <>Like</>
+                    }
+                </span>
+            </div>
         </div>
     );
 };

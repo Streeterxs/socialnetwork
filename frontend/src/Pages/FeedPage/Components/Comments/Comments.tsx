@@ -22,13 +22,15 @@ const Comments = ({comments}: {
 }) => {
     const commentsTypeFragmentReturned = useFragment(commentsTypeFragment, comments);
     return (
-        <div>
+        <div className="my-2">
             {
                 commentsTypeFragmentReturned && commentsTypeFragmentReturned.edges && commentsTypeFragmentReturned.edges.length > 0 ?
                 commentsTypeFragmentReturned.edges.map((edge: any, index: number) => {
                     return (
                         <Suspense key={index} fallback="loading...">
-                            <Comment comment={edge}/>
+                            <div className="my-5 w-full">
+                                <Comment comment={edge}/>
+                            </div>
                         </Suspense>
                     )
                 }):

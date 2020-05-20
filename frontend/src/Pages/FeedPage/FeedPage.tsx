@@ -69,7 +69,7 @@ const FeedPage = ({userIsLogged} : {
                     }
                     <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
                 </div>
-                <div>
+                <div className="w-full">
                     <Suspense fallback="loading...">
                         {
                             userPostsQuery && userPostsQuery.myPosts ?

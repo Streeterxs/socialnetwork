@@ -21,7 +21,7 @@ const repliesTypeFragment = graphql`
 const Replies = ({replies}: any) => {
     const repliesReturned = useFragment(repliesTypeFragment, replies);
     return (
-        <div>
+        <div className="my-5">
             {
                 repliesReturned && repliesReturned.edges && repliesReturned.edges.length > 0 ?
                 repliesReturned.edges.map((edge: any, index: number) => (

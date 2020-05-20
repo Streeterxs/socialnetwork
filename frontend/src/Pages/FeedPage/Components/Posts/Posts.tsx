@@ -24,13 +24,15 @@ const Posts = ({posts}: any) => {
     posts);
 
     return (
-        <div>
+        <div className="w-full">
             {
                 postListType && postListType.posts && postListType.posts.edges && postListType.posts.edges.length > 0 ?
                 postListType.posts.edges.map((postEdge: any, index: number) => {
                     return (
                         <Suspense key={index}  fallback="Loading..">
-                            <Post post={postEdge}/>
+                            <div className="my-10">
+                                <Post post={postEdge}/>
+                            </div>
                         </Suspense>
                     )
                 }) :

@@ -25,6 +25,14 @@ const userType = new GraphQLObjectType<IUser>({
                 type: GraphQLString,
                 resolve: (user, _) => user.email
             },
+            createdAt: {
+                type: GraphQLString,
+                resolve: (user) => user.createdAt
+            },
+            updatedAt: {
+                type: GraphQLString,
+                resolve: (user) => user.updatedAt
+            },
             token: {
                 type: GraphQLString,
                 resolve: (user, _) => user.tokens[0].token

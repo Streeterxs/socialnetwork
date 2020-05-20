@@ -19,6 +19,14 @@ const ReplyType = new GraphQLObjectType<IReply>({
             type: GraphQLString,
             resolve: (reply) => reply.content
         },
+        createdAt: {
+            type: GraphQLString,
+            resolve: (reply) => reply.createdAt
+        },
+        updatedAt: {
+            type: GraphQLString,
+            resolve: (reply) => reply.updatedAt
+        },
         likes: {
             type: GraphQLInt,
             resolve: (reply) => reply.likes.length

@@ -4,6 +4,8 @@ export interface IComment extends mongoose.Document {
     author: string,
     content: string,
     likes: string[],
+    createdAt: Date,
+    updatedAt: Date,
     replies: string[]
 }
 

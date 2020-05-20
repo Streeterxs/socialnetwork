@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 export interface IReply extends mongoose.Document {
     author: string;
     content: string;
+    createdAt: Date;
+    updatedAt: Date;
     likes: string[];
 }
 

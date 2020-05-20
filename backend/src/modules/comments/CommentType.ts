@@ -29,6 +29,14 @@ const CommentType = new GraphQLObjectType<IComment>({
             type: GraphQLBoolean,
             resolve: (comment, args, {user}) => comment.likes.includes(user.id)
         },
+        createdAt: {
+            type: GraphQLString,
+            resolve: (comment) => comment.createdAt
+        },
+        updatedAt: {
+            type: GraphQLString,
+            resolve: (comment) => comment.updatedAt
+        },
         replies: {
             type: ReplyConnection,
             args: connectionArgs,

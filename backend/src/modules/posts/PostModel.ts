@@ -5,6 +5,8 @@ import jsonwebtoken from 'jsonwebtoken';
 export interface IPost extends mongoose.Document {
     author: string;
     content: string;
+    createdAt: Date;
+    updatedAt: Date;
     likes: string[];
     comments: string[]
 }

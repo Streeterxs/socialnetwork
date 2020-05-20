@@ -29,6 +29,14 @@ const PostType = new GraphQLObjectType<IPost>({
             type: GraphQLBoolean,
             resolve: (post, args, {user}) => post.likes.includes(user.id)
         },
+        createdAt: {
+            type: GraphQLString,
+            resolve: (post) => post.createdAt
+        },
+        updatedAt: {
+            type: GraphQLString,
+            resolve: (post) => post.updatedAt
+        },
         comments: {
             type: CommentConnection,
             args: connectionArgs,

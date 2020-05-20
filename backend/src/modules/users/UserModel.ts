@@ -4,14 +4,16 @@ import jsonwebtoken from 'jsonwebtoken';
 
 
 export interface IUser extends mongoose.Document {
-    name: string,
-    password: string,
-    email: string,
-    tokens:[{token: string}],
-    friends: string[],
-    posts: string[],
-    generateAuthToken(): string,
-    verifyAuthToken(): void
+    name: string;
+    password: string;
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+    tokens:[{token: string}];
+    friends: string[];
+    posts: string[];
+    generateAuthToken(): string;
+    verifyAuthToken(): void;
 }
 
 export interface IUserModel extends mongoose.Model<IUser>{

@@ -19,11 +19,9 @@ fragment CommentTypeFragment on CommentTypeEdge {
         content
         likes
         userHasLiked
-        replies {
-            ...RepliesTypeFragment
-        }
         createdAt
         updatedAt
+        ...RepliesTypeFragment
     }
     
 }`;
@@ -57,7 +55,7 @@ const Comment = ({comment}: any) => {
     const [likes, setLikes] = useState(commentEdge.node ? commentEdge.node.likes : 0);
     const [hasLiked, setHasLiked] = useState(commentEdge.node ? commentEdge.node.userHasLiked : false);
 
-    const [isReplying, setReplying] = useState(false);
+    const [showReplies, setShowReplies] = useState(false);
 
     const [commitReplyCre, replyCreIsInFlight] = useMutation(commentReplyCreationMutation);
     const [commitLikeMut, likeMutIsInFlight] = useMutation(commentLikeMutation);
@@ -66,7 +64,7 @@ const Comment = ({comment}: any) => {
 
     const replyCreationFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        replyingHandler();
+        repliesHandler();
         const variables = {
             content: replyContent,
             comment: commentEdge.node ? commentEdge.node.id : null
@@ -99,9 +97,11 @@ const Comment = ({comment}: any) => {
         }
     }
 
-    const replyingHandler = () => {
-        setReplying(isReplying ? false : true);
+    const repliesHandler = () => {
+        setShowReplies(showReplies ? false : true);
     }
+
+    console.log('commentEdge: ', commentEdge);
 
     return (
         <div className="w-full">
@@ -122,9 +122,9 @@ const Comment = ({comment}: any) => {
                             <>Like</>
                         }
                     </span>
-                    <span className={"cursor-pointer text-gray-800 mx-2 " + (isReplying ? 'text-teal-700' : '')} onClick={replyingHandler}>
+                    <span className={"cursor-pointer text-gray-800 mx-2 " + (showReplies ? 'text-teal-700' : '')} onClick={repliesHandler}>
                         {
-                            isReplying ?
+                            showReplies ?
                             <>Replying</> :
                             <>Reply</>
                         }
@@ -135,14 +135,14 @@ const Comment = ({comment}: any) => {
                 <div className="mb-4">
                     <Suspense fallback="loading...">
                         {
-                            commentEdge && commentEdge.node && commentEdge.node.replies ?
-                            <Replies replies={commentEdge.node.replies}/> :
+                            showReplies && commentEdge && commentEdge.node ?
+                            <Replies replies={commentEdge.node}/> :
                             null
                         }
                     </Suspense>
                 </div>
                 {
-                    isReplying && commentEdge && commentEdge.node ?
+                    showReplies && commentEdge && commentEdge.node ?
                     <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/> :
                     null
                 }

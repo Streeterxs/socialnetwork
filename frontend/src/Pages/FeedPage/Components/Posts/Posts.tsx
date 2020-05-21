@@ -2,32 +2,56 @@ import React, { Suspense } from 'react';
 import Post from './Post';
 
 import { useFragment } from 'react-relay/hooks';
+import { useMutation, usePaginationFragment } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
 
 
-const Posts = ({posts}: any) => {
-    const postListType: any = useFragment(graphql`
-        fragment PostsTypeFragment on PostListType {
-            posts {
-                edges {
-                    ...PostTypeFragment
-                }
-                pageInfo {
-                    startCursor
-                    endCursor
-                    hasNextPage
-                    hasPreviousPage
-                }
-            }
+const postsTypeFragment = graphql`
+fragment PostsTypeFragment on Query 
+    @argumentDefinitions(
+        first: {type: "Int", defaultValue: 2},
+        last: {type: "Int"},
+        before: {type: "String"},
+        after: {type: "String", defaultValue: "cursor:1"}
+    ) 
+    @refetchable(queryName: "PostListPagination") {
+    myPosts (
+        first: $first,
+        last: $last,
+        before: $before,
+        after: $after,           
+    ) @connection(key: "PostsTypeFragment_myPosts"){
+        edges {
+            ...PostTypeFragment
         }
-    `,
+        pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
+    }
+}`
+
+const Posts = ({posts}: any) => {
+
+    const {
+        data,
+        loadNext,
+        loadPrevious,
+        hasNext,
+        hasPrevious,
+        isLoadingNext,
+        isLoadingPrevious,
+        refetch // For refetching connection
+      }: any = usePaginationFragment(postsTypeFragment,
     posts);
 
     return (
         <div className="w-full">
             {
-                postListType && postListType.posts && postListType.posts.edges && postListType.posts.edges.length > 0 ?
-                postListType.posts.edges.map((postEdge: any, index: number) => {
+                data && data.myPosts && data.myPosts.edges && data.myPosts.edges.length > 0 ?
+                data.myPosts.edges.map((postEdge: any, index: number) => {
                     return (
                         <Suspense key={index}  fallback="Loading..">
                             <div className="my-10">
@@ -37,6 +61,18 @@ const Posts = ({posts}: any) => {
                     )
                 }) :
                 null
+            }
+            {
+                hasNext ?
+                <button disabled={!hasNext} onClick={() => {
+                    loadNext(1, {
+                        onCompleted: (returnedData: any) => {
+                            console.log('returnedData: ', returnedData);
+                            console.log('newValueData: ', data);
+                        }
+                    })
+                }}>Load next page</button> :
+                <p>No more posts to load</p>
             }
         </div>
     );

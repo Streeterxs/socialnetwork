@@ -155,13 +155,6 @@ type PostCreationPayload {
   clientMutationId: String
 }
 
-"""Post List type"""
-type PostListType implements Node {
-  """The ID of an object"""
-  id: ID!
-  posts(after: String, first: Int, before: String, last: Int): PostTypeConnection
-}
-
 """Post type"""
 type PostType implements Node {
   """The ID of an object"""
@@ -207,7 +200,7 @@ type Query {
     ids: [ID!]!
   ): [Node]!
   myself: UserType
-  myPosts: PostListType
+  myPosts(after: String, first: Int, before: String, last: Int): PostTypeConnection
 }
 
 """Reply type"""

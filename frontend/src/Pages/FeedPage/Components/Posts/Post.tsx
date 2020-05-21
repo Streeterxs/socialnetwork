@@ -24,7 +24,12 @@ const commentCreationMutation = graphql`
 `;
 
 const postTypeFragment = graphql`
-    fragment PostTypeFragment on PostTypeEdge {
+    fragment PostTypeFragment on PostTypeEdge @argumentDefinitions(
+        first: {type: "Int"}
+        last: {type: "Int"}
+        before: {type: "String"}
+        after: {type: "String"}
+    ) {
         cursor
         node {
             id
@@ -34,11 +39,14 @@ const postTypeFragment = graphql`
             content
             likes
             userHasLiked
-            comments {
-                ...CommentsTypeFragment
-            }
             createdAt
             updatedAt
+            ...CommentsTypeFragment @arguments(
+                first: $first,
+                last: $last,
+                before: $before,
+                after: $after
+            )
         }
     }
 `;
@@ -57,7 +65,13 @@ const postLikeMutation = graphql`
 const Post = ({post}: any) => {
     let commentContent = '';
 
-    const postEdge = useFragment(postTypeFragment, post);
+    const postEdge = useFragment(postTypeFragment, {...post,
+            first: 3,
+            last: null,
+            before: null,
+            after: 'cursor:1'
+        });
+
     const [likes, setLikes] = useState(postEdge.node.likes);
     const [hasLiked, setHasLiked] = useState(postEdge.node.userHasLiked);
     
@@ -96,7 +110,9 @@ const Post = ({post}: any) => {
                 setHasLiked(LikePost.post.userHasLiked);
             }
         });
-    }
+    };
+
+
     return (
         <div className="w-full">
             <div className="rounded-lg overflow-hidden shadow-custom">
@@ -123,8 +139,8 @@ const Post = ({post}: any) => {
                     <div className="px-6">
                         <Suspense fallback="loading">
                             {
-                                postEdge && postEdge.node.comments ?
-                                <Comments comments={postEdge.node.comments}/> :
+                                postEdge && postEdge.node ?
+                                <Comments comments={postEdge.node}/> :
                                 null 
                             }
                         </Suspense>

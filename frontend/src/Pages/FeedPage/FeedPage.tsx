@@ -7,7 +7,7 @@ import { useMutation } from 'react-relay/lib/relay-experimental';
 import { useHistory } from 'react-router';
 
 
-const loginMutation = graphql`
+const postCreationMutation = graphql`
   mutation FeedPagePostCreationMutation($content: String!) {
     PostCreation(input: {content: $content, clientMutationId: "1"}) {
       post {
@@ -35,12 +35,10 @@ const FeedPage = ({userIsLogged} : {
         history.push('/login');
     }, [userIsLogged]);
 
-    const [commit, isInFlight] = useMutation(loginMutation);
+    const [commit, isInFlight] = useMutation(postCreationMutation);
     const userPostsQuery: any = useLazyLoadQuery(graphql`
         query FeedPageMyselfQuery {
-            myPosts {
-                ...PostsTypeFragment
-            }
+            ...PostsTypeFragment
         }`, 
         {}, 
         {fetchPolicy: 'store-or-network'}
@@ -72,8 +70,8 @@ const FeedPage = ({userIsLogged} : {
                 <div className="w-full">
                     <Suspense fallback="loading...">
                         {
-                            userPostsQuery && userPostsQuery.myPosts ?
-                            <Posts posts={userPostsQuery.myPosts}/> :
+                            userPostsQuery && userPostsQuery ?
+                            <Posts posts={userPostsQuery}/> :
                             null
                         }
                     </Suspense>

@@ -9,25 +9,25 @@ import Comment from '../modules/comments/CommentModel';
 
 const registeredTypes = [
     {
-        name: 'UserType',
+        name: 'User',
         qlType: 'UserType',
         dbType: User,
         loader: loadUser
     },
     {
-        name: 'PostType',
+        name: 'Post',
         qlType: 'PostType',
         dbType: Post,
         loader: postLoader
     },
     {
-        name: 'CommentType',
+        name: 'Comment',
         qlType: 'CommentType',
         dbType: Comment,
         loader: commentLoader
     },
     {
-        name: 'ReplyType',
+        name: 'Reply',
         qlType: 'ReplyType',
         dbType: Reply,
         loader: replyLoader

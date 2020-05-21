@@ -51,20 +51,6 @@ const PostType = new GraphQLObjectType<IPost>({
     interfaces: [nodeInterface]
 });
 
-export const PostListType = new GraphQLObjectType<IPost[]>({
-    name: 'PostListType',
-    description: 'Post List type',
-    fields: () => ({
-        id: globalIdField('Post'),
-            posts: {
-                type: PostConnection,
-                args: connectionArgs,
-                resolve: (posts, args) => connectionFromArray(posts, args)
-            },
-    }),
-    interfaces: [nodeInterface]
-});
-
 export const {connectionType: PostConnection} =
         connectionDefinitions({nodeType: PostType});
 

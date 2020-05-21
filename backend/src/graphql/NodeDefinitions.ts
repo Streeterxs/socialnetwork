@@ -9,6 +9,7 @@ export const {nodeInterface, nodeField, nodesField} = nodeDefinitions(
         console.log('type: ', type);
         return type === x.name
       });
+      console.log('registeredType: ', registeredType);
       return registeredType.loader(id);
     },
     (obj) => {

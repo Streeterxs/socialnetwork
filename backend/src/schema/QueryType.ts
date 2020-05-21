@@ -4,7 +4,8 @@ import { postsLoaderByAuthors } from '../modules/posts/PostLoader';
 import userType from '../modules/users/UserType';
 import { nodeField } from '../graphql/NodeDefinitions';
 import { nodesField } from '../graphql/NodeDefinitions';
-import { PostListType } from '../modules/posts/PostType';
+import { PostConnection } from '../modules/posts/PostType';
+import { connectionArgs, connectionFromArray } from 'graphql-relay';
 
 
 const QueryType = new GraphQLObjectType({
@@ -20,13 +21,15 @@ const QueryType = new GraphQLObjectType({
             }
         },
         myPosts: {
-            type: PostListType,
+            type: PostConnection,
+            args: connectionArgs,
             resolve: async (value, args, context) => {
-                const postList = await postsLoaderByAuthors([context.user.id, ...context.user.friends]);
-                return postList;
-            }
-        },
-    })
+                return connectionFromArray(
+                    await postsLoaderByAuthors([context.user.id, ...context.user.friends]),
+                args
+            )
+        }
+    }})
 });
 
 export default QueryType;

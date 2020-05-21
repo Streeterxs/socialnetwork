@@ -6,7 +6,7 @@ import { useFragment, usePaginationFragment } from 'react-relay/hooks';
 
 const repliesTypeFragment = graphql`
     fragment RepliesTypeFragment on CommentType @argumentDefinitions(
-        first: {type: "Int", defaultValue: 0}
+        first: {type: "Int", defaultValue: 1}
         last: {type: "Int"},
         before: {type: "String"},
         after: {type: "String", defaultValue: "cursor:1"}

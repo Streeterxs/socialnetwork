@@ -11,7 +11,7 @@ import graphqlHttp from 'koa-graphql';
 import koaPlayground from 'graphql-playground-middleware-koa';
 
 import { Schema } from './schema/Schema';
-import { IUser } from './modules/users/UserModel';
+import User, { IUser } from './modules/users/UserModel';
 import getUser from './auth';
 
 dotenv.config({path: path.join(__dirname, '/./../.env')});

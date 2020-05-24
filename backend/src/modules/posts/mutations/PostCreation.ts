@@ -21,6 +21,7 @@ const PostCreation = mutationWithClientMutationId({
     },
     mutateAndGetPayload: async ({content}, {user}: {user: IUser}) => {
         try {
+            console.log(user);
             const postCreated = new Post({content, author: `${user.id}`});
             await postCreated.save();
             user.posts.push(`${postCreated.id}`);

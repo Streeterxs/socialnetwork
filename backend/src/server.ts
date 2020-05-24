@@ -17,11 +17,14 @@ server.listen('3333', () => {
     console.log('O servidor foi iniciado');
 });
 
-SubscriptionServer.create(
+const subscriptionServer = SubscriptionServer.create(
     {
       onConnect: async (connectionParams: ConnectionParams) => {
         const user = await getUser(connectionParams.authorization);
-        return {user}
+        return {
+          req: {},
+          user
+        }
       },
       // eslint-disable-next-line
       onDisconnect: () => console.log('Client subscription disconnected!'),

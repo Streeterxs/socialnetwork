@@ -1,12 +1,12 @@
 import { GraphQLObjectType } from "graphql";
 
-import PostCreationSubscription from "../modules/posts/subscriptions/PostCreation";
+import PostSubscriptions from "../modules/posts/subscriptions/";
 
 
 const SubscriptionType = new GraphQLObjectType({
     name: 'SubscriptionType',
     fields: () => ({
-        PostCreationSubscription,
+        ...PostSubscriptions,
     })
 });
 

@@ -3,6 +3,7 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import PostType from '../PostType';
 import Post from '../PostModel';
 import { IUser } from '../../../modules/users/UserModel';
+import { pubsub } from '../../../app';
 
 const PostCreation = mutationWithClientMutationId({
     name: 'PostCreation',
@@ -24,6 +25,8 @@ const PostCreation = mutationWithClientMutationId({
             await postCreated.save();
             user.posts.push(`${postCreated.id}`);
             await user.save();
+            pubsub.publish('newPost', postCreated);
+            console.log('new post created!');
             return postCreated;
         } catch (err) {
             console.log(err);

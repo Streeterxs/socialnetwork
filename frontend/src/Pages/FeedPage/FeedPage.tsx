@@ -25,6 +25,7 @@ const postCreationMutation = graphql`
 const FeedPage = ({userIsLogged} : {
     userIsLogged: boolean
 }) => {
+    console.log('entrou feed page');
     const history = useHistory();
     useEffect(() => {
         console.log('Entrou feed page');
@@ -57,27 +58,40 @@ const FeedPage = ({userIsLogged} : {
             }
         });
     }
+    if (isInFlight) {
+        console.log("ESTÁ VOANDOOO UUUUUUUUUUUUUUU");
+    }
 
     return (
-        <div className="flex items-center justify-center">
-            <div className="w-8/12">
-                <div className="w-full mb-5">
-                    {
-                        isInFlight ? 'Loading' : null
-                    }
-                    <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
-                </div>
-                <div className="w-full">
-                    <Suspense fallback="loading...">
+        <Suspense fallback={() => {
+            return (
+                "is Loading"
+            )
+        }}>
+            <div className="flex items-center justify-center">
+                <div className="w-8/12">
+                    <div className="w-full mb-5">
                         {
-                            userPostsQuery && userPostsQuery ?
-                            <Posts posts={userPostsQuery}/> :
-                            null
+                            isInFlight ? 'Loading' : null
                         }
-                    </Suspense>
+                        <PostCreation contentChange={(postContent: string) => {content = postContent}} formSubmit={handlePostFormCreationSubmit}/>
+                    </div>
+                    <div className="w-full">
+                        <Suspense fallback={() => {
+                            return (
+                                "is Loading"
+                            )
+                        }}>
+                            {
+                                userPostsQuery && userPostsQuery ?
+                                <Posts posts={userPostsQuery}/> :
+                                null
+                            }
+                        </Suspense>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Suspense>
     );
 };
 

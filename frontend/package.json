@@ -16,6 +16,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "relay-runtime": "^9.0.0",
+    "subscriptions-transport-ws": "^0.9.16",
     "typescript": "^3.7.5"
   },
   "scripts": {

@@ -24,30 +24,27 @@ const commentCreationMutation = graphql`
 `;
 
 const postTypeFragment = graphql`
-    fragment PostTypeFragment on PostTypeEdge @argumentDefinitions(
+    fragment PostTypeFragment on PostType @argumentDefinitions(
         first: {type: "Int"}
         last: {type: "Int"}
         before: {type: "String"}
         after: {type: "String"}
     ) {
-        cursor
-        node {
-            id
-            author {
-                name
-            }
-            content
-            likes
-            userHasLiked
-            createdAt
-            updatedAt
-            ...CommentsTypeFragment @arguments(
-                first: $first,
-                last: $last,
-                before: $before,
-                after: $after
-            )
+        id
+        author {
+            name
         }
+        content
+        likes
+        userHasLiked
+        createdAt
+        updatedAt
+        ...CommentsTypeFragment @arguments(
+            first: $first,
+            last: $last,
+            before: $before,
+            after: $after
+        )
     }
 `;
 
@@ -65,15 +62,10 @@ const postLikeMutation = graphql`
 const Post = ({post}: any) => {
     let commentContent = '';
 
-    const postEdge = useFragment(postTypeFragment, {...post,
-            first: 3,
-            last: null,
-            before: null,
-            after: 'cursor:1'
-        });
+    const postEdge = useFragment(postTypeFragment, post);
 
-    const [likes, setLikes] = useState(postEdge.node.likes);
-    const [hasLiked, setHasLiked] = useState(postEdge.node.userHasLiked);
+    const [likes, setLikes] = useState(postEdge.likes);
+    const [hasLiked, setHasLiked] = useState(postEdge.userHasLiked);
     
     const [commentCreationCommit, cmtCrtIsInFlight] = useMutation(commentCreationMutation);
     const [likeCrtCommit, likeCrtIsInFlight] = useMutation(postLikeMutation)
@@ -83,7 +75,7 @@ const Post = ({post}: any) => {
 
         const variables = {
             content: commentContent,
-            post: postEdge.node.id
+            post: postEdge.id
         }
         commentCreationCommit({
             variables,
@@ -98,7 +90,7 @@ const Post = ({post}: any) => {
         setHasLiked(hasLiked ? false : true);
 
         const variables = {
-            postId: postEdge.node.id
+            postId: postEdge.id
         }
 
         console.log(variables);
@@ -119,7 +111,7 @@ const Post = ({post}: any) => {
                 <div className="py-4">
                     <div className="px-6 py-2">
                         <p className="text-gray-800 text-base">
-                            {postEdge.node.content}
+                            {postEdge.content}
                         </p>
                     </div>
                     <div className="text-gray-800 px-6 py-1 mb-2">
@@ -139,8 +131,8 @@ const Post = ({post}: any) => {
                     <div className="px-6">
                         <Suspense fallback="loading">
                             {
-                                postEdge && postEdge.node ?
-                                <Comments comments={postEdge.node}/> :
+                                postEdge && postEdge ?
+                                <Comments comments={postEdge}/> :
                                 null 
                             }
                         </Suspense>

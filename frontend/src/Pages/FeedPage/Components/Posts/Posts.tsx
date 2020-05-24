@@ -1,9 +1,10 @@
 import React, { Suspense } from 'react';
+
+import {  usePaginationFragment } from 'react-relay/lib/relay-experimental';
+import graphql from 'babel-plugin-relay/macro';
+
 import Post from './Post';
 
-import { useFragment } from 'react-relay/hooks';
-import { useMutation, usePaginationFragment } from 'react-relay/lib/relay-experimental';
-import graphql from 'babel-plugin-relay/macro';
 
 
 const postsTypeFragment = graphql`
@@ -12,7 +13,7 @@ fragment PostsTypeFragment on Query
         first: {type: "Int", defaultValue: 2},
         last: {type: "Int"},
         before: {type: "String"},
-        after: {type: "String", defaultValue: "cursor:1"}
+        after: {type: "String"}
     ) 
     @refetchable(queryName: "PostListPagination") {
     myPosts (
@@ -22,7 +23,10 @@ fragment PostsTypeFragment on Query
         after: $after,           
     ) @connection(key: "PostsTypeFragment_myPosts"){
         edges {
-            ...PostTypeFragment
+            cursor
+            node {
+                ...PostTypeFragment
+            }
         }
         pageInfo {
             startCursor
@@ -51,13 +55,13 @@ const Posts = ({posts}: any) => {
         <div className="w-full">
             {
                 data && data.myPosts && data.myPosts.edges && data.myPosts.edges.length > 0 ?
-                data.myPosts.edges.map((postEdge: any, index: number) => {
+                data.myPosts.edges.filter((postEdge: any) => !!postEdge.node).map((postEdge: any, index: number) => {
                     return (
                         <Suspense key={index}  fallback="Loading..">
                             <div className="my-10">
-                                <Post post={postEdge}/>
+                                <Post post={postEdge.node}/>
                             </div>
-                        </Suspense>
+                        </Suspense> 
                     )
                 }) :
                 null

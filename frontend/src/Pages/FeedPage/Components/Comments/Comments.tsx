@@ -8,7 +8,7 @@ const commentsTypeFragment = graphql`
         first: {type: "Int", defaultValue: 4},
         last: {type: "Int"},
         before: {type: "String"},
-        after: {type: "String", defaultValue: "cursor:1"}
+        after: {type: "String"}
     ) @refetchable(queryName: "CommentsListPagination") {
         comments (
                 first: $first

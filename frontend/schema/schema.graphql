@@ -1,6 +1,7 @@
 schema {
   query: Query
   mutation: MutationType
+  subscription: SubscriptionType
 }
 
 """Comment type"""
@@ -155,6 +156,15 @@ type PostCreationPayload {
   clientMutationId: String
 }
 
+input PostCreationSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type PostCreationSubscriptionPayload {
+  post: PostType
+  clientSubscriptionId: String
+}
+
 """Post type"""
 type PostType implements Node {
   """The ID of an object"""
@@ -231,6 +241,10 @@ type ReplyTypeEdge {
 
   """A cursor for use in pagination"""
   cursor: String!
+}
+
+type SubscriptionType {
+  PostCreationSubscription(input: PostCreationSubscriptionInput!): PostCreationSubscriptionPayload
 }
 
 input UserCreationInput {

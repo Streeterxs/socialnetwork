@@ -6,6 +6,8 @@ const PostCreation = ({contentChange, formSubmit}:
         formSubmit: (event: React.FormEvent<HTMLFormElement>) => void
     }
     ) => {
+        
+    console.log('entrou post creation');
     const [startTransition, isPending] = useTransition({
             timeoutMs: 10000
         });

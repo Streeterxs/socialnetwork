@@ -6,7 +6,7 @@ import Routes from './routes';
 import { Layout } from './Components';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
-import { PostCreationSubscriptionModule } from './Pages/FeedPage/Components/Posts/NewPostsSubscription';
+import { NewPostsSubscriptionModule, PostLikeSubscriptionModule } from './Pages';
 
 
 
@@ -15,9 +15,13 @@ const App = () => {
   const [environment, setEnvironment] = useState(useRelayEnvironment());
 
   useEffect(() => {
-    const {subscribe, dispose} = PostCreationSubscriptionModule(environment);
-    dispose()
-    subscribe();
+    const postSubscribeModule = NewPostsSubscriptionModule(environment);
+    postSubscribeModule.dispose()
+    postSubscribeModule.subscribe();
+    const postLikeSubscribeModule = PostLikeSubscriptionModule(environment);
+    postLikeSubscribeModule.dispose()
+    postLikeSubscribeModule.subscribe();
+
   }, [environment]);
 
 

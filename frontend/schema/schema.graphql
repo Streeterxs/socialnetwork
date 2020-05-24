@@ -165,6 +165,15 @@ type PostCreationSubscriptionPayload {
   clientSubscriptionId: String
 }
 
+input PostLikeSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type PostLikeSubscriptionPayload {
+  post: PostType
+  clientSubscriptionId: String
+}
+
 """Post type"""
 type PostType implements Node {
   """The ID of an object"""
@@ -245,6 +254,9 @@ type ReplyTypeEdge {
 
 type SubscriptionType {
   PostCreationSubscription(input: PostCreationSubscriptionInput!): PostCreationSubscriptionPayload
+
+  """Post Like subscription"""
+  PostLikeSubscription(input: PostLikeSubscriptionInput!): PostLikeSubscriptionPayload
 }
 
 input UserCreationInput {

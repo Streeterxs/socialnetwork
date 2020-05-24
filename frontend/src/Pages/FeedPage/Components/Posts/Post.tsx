@@ -110,19 +110,24 @@ const Post = ({post}: any) => {
             <div className="rounded-lg overflow-hidden shadow-custom">
                 <div className="py-4">
                     <div className="px-6 py-2">
-                        <p className="text-gray-800 text-base">
+                        <small>
+                            <b>
+                                {postEdge.author.name}
+                            </b>
+                        </small>
+                        <p className="text-gray-800 text-base my-3">
                             {postEdge.content}
                         </p>
                     </div>
                     <div className="text-gray-800 px-6 py-1 mb-2">
                         <span className="text-teal-600">
-                            <FontAwesomeIcon icon={faThumbsUp} /> {likes}
+                            <FontAwesomeIcon icon={faThumbsUp} /> {likeCrtIsInFlight ? likes : postEdge.likes}
                         </span>
                     </div>
                     <div className="px-4 py-2 mx-4 border-b-2 border-t-2 border-gray-300">
-                        <span className={"cursor-pointer text-gray-800 " + (hasLiked ? 'text-teal-600' : '')} onClick={likesHandler}>
+                        <span className={"cursor-pointer text-gray-800 " + ((likeCrtIsInFlight ? hasLiked : postEdge.userHasLiked) ? 'text-teal-600' : '')} onClick={likesHandler}>
                             {
-                                hasLiked ?
+                                (likeCrtIsInFlight ? hasLiked : postEdge.userHasLiked) ?
                                 <><FontAwesomeIcon icon={faThumbsUp} /> Liked</> :
                                 <><FontAwesomeIcon icon={faThumbsUp} /> Like</>
                             }

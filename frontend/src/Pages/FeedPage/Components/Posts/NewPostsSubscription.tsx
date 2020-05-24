@@ -4,8 +4,8 @@ import { requestSubscription } from "react-relay";
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment";
 
 const postTypeSubscription = graphql`
-subscription NewPostsSubscription {
-    PostCreationSubscription(input: {clientSubscriptionId: "123"}) {
+subscription NewPostsSubscription ($clientSubscriptionId: String!) {
+    PostCreationSubscription(input: {clientSubscriptionId: $clientSubscriptionId}) {
         post {
             id
             author {
@@ -22,7 +22,7 @@ subscription NewPostsSubscription {
 }
 `;
 
-export const PostCreationSubscriptionModule = (environment: RelayModernEnvironment): {
+const PostCreationSubscriptionModule = (environment: RelayModernEnvironment): {
     dispose: () => void,
     subscribe: () => void
 } => {
@@ -45,7 +45,7 @@ export const PostCreationSubscriptionModule = (environment: RelayModernEnvironme
     const generatePostRequestSubscriptionConfig = ():  GraphQLSubscriptionConfig<{}> => {
         return {
             subscription: postTypeSubscription,
-            variables: {clientSubscriptionId: "12"},
+            variables: {clientSubscriptionId: localStorage.getItem('authToken')+'1'},
             onNext: (response: any) => {
                 console.log('response ws: ', response)
             },
@@ -74,3 +74,5 @@ export const PostCreationSubscriptionModule = (environment: RelayModernEnvironme
         subscribe
     }
 }
+
+export default PostCreationSubscriptionModule

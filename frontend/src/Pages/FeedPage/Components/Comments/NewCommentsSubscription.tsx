@@ -44,20 +44,18 @@ const NewCommentsSubscription = (environment: RelayModernEnvironment) => {
             updater: store => {
                 const commentNode = (store.getRootField('CreateCommentSubscription') as RecordProxy<{}>).getLinkedRecord('comment') as RecordProxy<{}>;
                 const post = (store.getRootField('CreateCommentSubscription') as RecordProxy<{}>).getLinkedRecord('post') as RecordProxy<{}>;
-                console.log('post: ', post);
                 const conn = ConnectionHandler.getConnection(post, 'CommentsTypeFragment_comments') as RecordProxy<{}>;
-                console.log('conn: ', conn);
+                const hasNextPage =  (conn.getLinkedRecord('pageInfo') as RecordProxy<{}>).getValue('hasNextPage');
                 let commentEdge = null;
                 if (store && conn && commentNode) {
                     commentEdge = ConnectionHandler.createEdge(store, conn, commentNode, 'CommentTypeEdge');
-                    console.log('commentEdge: ', commentEdge);
                 }
                 if (!conn) {
                 // eslint-disable-next-line
                 console.log('maybe this connection is not in relay store: ', 'CommentsTypeFragment_comments');
                 return;
                 }
-                if (commentEdge) {
+                if (commentEdge && !hasNextPage) {
                     ConnectionHandler.insertEdgeAfter(conn, commentEdge);
                 }
             }

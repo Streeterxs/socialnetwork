@@ -4,6 +4,7 @@ import { GraphQLString } from "graphql";
 import CommentType from "../CommentType";
 import Comment from '../CommentModel';
 import { IUser } from "../../../modules/users/UserModel";
+import { pubsub } from "../../../app";
 
 const LikeComment = mutationWithClientMutationId({
     name: 'LikeComment',
@@ -28,10 +29,12 @@ const LikeComment = mutationWithClientMutationId({
                 const indexOf = commentFound.likes.indexOf(user.id);
                 commentFound.likes.splice(indexOf, 1);
                 await commentFound.save();
+                pubsub.publish('commentLike', commentFound);
                 return commentFound
             };
             commentFound.likes.push(user.id);
             await commentFound.save();
+            pubsub.publish('commentLike', commentFound);
             return commentFound;
         } catch (err) {
             console.log(err);

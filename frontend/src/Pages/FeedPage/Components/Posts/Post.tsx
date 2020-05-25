@@ -14,6 +14,7 @@ const commentCreationMutation = graphql`
     mutation PostCommentCreationMutation($content: String!, $post: String!) {
         CreateComment(input: {content: $content, post: $post, clientMutationId: "2"}) {
             comment {
+                id
                 content
                 author {
                     name

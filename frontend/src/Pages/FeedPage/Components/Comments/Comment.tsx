@@ -101,8 +101,6 @@ const Comment = ({comment}: any) => {
         setShowReplies(showReplies ? false : true);
     }
 
-    console.log('commentEdge: ', commentEdge);
-
     return (
         <div className="w-full">
             <div className="my-2">

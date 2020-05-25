@@ -46,6 +46,16 @@ type CreateCommentPayload {
   clientMutationId: String
 }
 
+input CreateCommentSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type CreateCommentSubscriptionPayload {
+  comment: CommentType
+  post: PostType
+  clientSubscriptionId: String
+}
+
 input CreateReplyInput {
   content: String
   comment: String
@@ -257,6 +267,9 @@ type SubscriptionType {
 
   """Post Like subscription"""
   PostLikeSubscription(input: PostLikeSubscriptionInput!): PostLikeSubscriptionPayload
+
+  """Create Comment Subscription"""
+  CreateCommentSubscription(input: CreateCommentSubscriptionInput!): CreateCommentSubscriptionPayload
 }
 
 input UserCreationInput {

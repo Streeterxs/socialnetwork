@@ -63,6 +63,11 @@ const Reply = ({reply}: any) => {
     return (
         <div className="w-full my-1">
             <div>
+                <small>
+                    <b>
+                        {replyFragmentReturn.node.author.name}
+                    </b>
+                </small>
                 <p className="text-gray-800 text-base">
                     {replyFragmentReturn.node.content}
                 </p>

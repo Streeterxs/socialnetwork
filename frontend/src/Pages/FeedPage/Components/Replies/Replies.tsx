@@ -42,9 +42,6 @@ const Replies = ({replies}: any) => {
         refetch
     } = usePaginationFragment(repliesTypeFragment, replies);
 
-    console.log('replies data:', data);
-    console.log('replies hasNext: ', hasNext);
-
     return (
         <div className="my-5">
             {

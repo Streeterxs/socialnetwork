@@ -55,7 +55,7 @@ const Comment = ({comment}: any) => {
     const [likes, setLikes] = useState(commentEdge.node ? commentEdge.node.likes : 0);
     const [hasLiked, setHasLiked] = useState(commentEdge.node ? commentEdge.node.userHasLiked : false);
 
-    const [showReplies, setShowReplies] = useState(false);
+    const [showReplyCreation, setShowReplyCreation] = useState(false);
 
     const [commitReplyCre, replyCreIsInFlight] = useMutation(commentReplyCreationMutation);
     const [commitLikeMut, likeMutIsInFlight] = useMutation(commentLikeMutation);
@@ -98,12 +98,18 @@ const Comment = ({comment}: any) => {
     }
 
     const repliesHandler = () => {
-        setShowReplies(showReplies ? false : true);
+        setShowReplyCreation(showReplyCreation ? false : true);
     }
 
+    console.log('commentEdge: ', commentEdge);
     return (
         <div className="w-full">
             <div className="my-2">
+                <small>
+                    <b>
+                        {commentEdge.node.author.name}
+                    </b>
+                </small>
                 <div>
                     <p className="text-gray-800 text-base">
                         {commentEdge.node ? commentEdge.node.content : null}
@@ -120,9 +126,9 @@ const Comment = ({comment}: any) => {
                             <>Like</>
                         }
                     </span>
-                    <span className={"cursor-pointer text-gray-800 mx-2 " + (showReplies ? 'text-teal-700' : '')} onClick={repliesHandler}>
+                    <span className={"cursor-pointer text-gray-800 mx-2 " + (showReplyCreation ? 'text-teal-700' : '')} onClick={repliesHandler}>
                         {
-                            showReplies ?
+                            showReplyCreation ?
                             <>Replying</> :
                             <>Reply</>
                         }
@@ -130,20 +136,20 @@ const Comment = ({comment}: any) => {
                 </div>
             </div>
             <div className="px-6">
+                {
+                    showReplyCreation && commentEdge && commentEdge.node ?
+                    <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/> :
+                    null
+                }
                 <div className="mb-4">
                     <Suspense fallback="loading...">
                         {
-                            showReplies && commentEdge && commentEdge.node ?
+                            commentEdge && commentEdge.node ?
                             <Replies replies={commentEdge.node}/> :
                             null
                         }
                     </Suspense>
                 </div>
-                {
-                    showReplies && commentEdge && commentEdge.node ?
-                    <ReplyCreation formSubmit={replyCreationFormSubmit} replyContentChange={newContent => replyContent = newContent}/> :
-                    null
-                }
             </div>
         </div>
     );

@@ -232,6 +232,16 @@ type Query {
   myPosts(after: String, first: Int, before: String, last: Int): PostTypeConnection
 }
 
+input ReplyCreationSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type ReplyCreationSubscriptionPayload {
+  reply: ReplyType
+  comment: CommentType
+  clientSubscriptionId: String
+}
+
 """Reply type"""
 type ReplyType implements Node {
   """The ID of an object"""
@@ -270,6 +280,9 @@ type SubscriptionType {
 
   """Create Comment Subscription"""
   CreateCommentSubscription(input: CreateCommentSubscriptionInput!): CreateCommentSubscriptionPayload
+
+  """Reply Creation Subscription"""
+  ReplyCreationSubscription(input: ReplyCreationSubscriptionInput!): ReplyCreationSubscriptionPayload
 }
 
 input UserCreationInput {

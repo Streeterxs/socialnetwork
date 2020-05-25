@@ -51,9 +51,13 @@ const PostCreationSubscriptionModule = (environment: RelayModernEnvironment): {
             },
             updater: store => {
                 const postNode = (store.getRootField('PostCreationSubscription') as RecordProxy<{}>).getLinkedRecord('post') as RecordProxy<{}>;
-                const conn = ConnectionHandler.getConnection(store.get(ROOT_ID) as RecordProxy<{}>, 'PostsTypeFragment_myPosts') as RecordProxy<{}>;
+                const conn = ConnectionHandler.getConnection(store.getRoot() as RecordProxy<{}>, 'PostsTypeFragment_myPosts') as RecordProxy<{}>;
+                const myPosts = (store.get(ROOT_ID) as RecordProxy<{}>).getLinkedRecord('myPosts') as RecordProxy<{}>;
                 let postEdge = null;
-                if (store && conn && postNode) {
+                console.log('post conn: ', conn);
+                console.log('post new node: ', postNode);
+                console.log('myposts: ', myPosts);
+                if (store && (conn || myPosts) && postNode) {
                     postEdge = ConnectionHandler.createEdge(store, conn, postNode, 'PostTypeEdge');
                     console.log('postEdge: ', postEdge);
                 }
@@ -63,7 +67,7 @@ const PostCreationSubscriptionModule = (environment: RelayModernEnvironment): {
                 return;
                 }
                 if (postEdge) {
-                    ConnectionHandler.insertEdgeBefore(conn, postEdge);
+                    ConnectionHandler.insertEdgeBefore((conn ? conn : myPosts), postEdge);
                 }
             }
         }

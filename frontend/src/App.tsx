@@ -6,7 +6,7 @@ import Routes from './routes';
 import { Layout } from './Components';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
-import { NewPostsSubscriptionModule, PostLikeSubscriptionModule, NewCommentsSubscription } from './Pages';
+import { NewPostsSubscriptionModule, PostLikeSubscriptionModule, NewCommentsSubscription, NewRepliesSubscriptionModule } from './Pages';
 
 
 
@@ -26,6 +26,10 @@ const App = () => {
     const commentSubscribeModule = NewCommentsSubscription(environment);
     commentSubscribeModule.dispose();
     commentSubscribeModule.subscribe();
+
+    const replySubscribeModule = NewRepliesSubscriptionModule(environment);
+    replySubscribeModule.dispose();
+    replySubscribeModule.subscribe();
   }, [environment]);
 
 

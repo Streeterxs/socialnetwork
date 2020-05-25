@@ -5,6 +5,7 @@ import Comment from '../CommentModel';
 import CommentType from '../CommentType';
 import { postLoader } from '../../../modules/posts/PostLoader';
 import { IUser } from '../../../modules/users/UserModel';
+import { pubsub } from '../../../app';
 
 const CreateComment = mutationWithClientMutationId({
     name: 'CreateComment',
@@ -34,7 +35,8 @@ const CreateComment = mutationWithClientMutationId({
             await comment.save();
             const postFinded = await postLoader(postId);
             postFinded.comments.push(comment.id);
-            postFinded.save();
+            await postFinded.save();
+            pubsub.publish('newComment', comment);
             return comment;
         } catch (err) {
             console.log(err);

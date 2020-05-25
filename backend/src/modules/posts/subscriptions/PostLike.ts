@@ -25,7 +25,7 @@ const PostLikeSubscription = subscriptionWithClientId({
         const loggedUser = variables.user;
         const author = await loadUser(postLiked.author);
 
-        return `${loggedUser._id}` === `${author._id}` || !!author.friends.find(friend => `${loggedUser._id}` === `${friend}`);
+        return `${loggedUser._id}` === `${author._id}` || !!author.friends.includes(loggedUser._id);
     }),
     getPayload: (obj: any) => {
         return {

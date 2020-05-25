@@ -1,9 +1,17 @@
 import Post, { IPost } from './PostModel';
+import mongoose from 'mongoose'
 
 export const postLoader = async (id: string) => {
     const postFounded = await Post.findById(id);
     return postFounded;
 };
+
+export const postLoaderByComment = async (commentId: string) => {
+    console.log('commentId: ', commentId);
+    const postFounded = await Post.findOne({comments: commentId});
+    console.log('postFounded: ', postFounded);
+    return postFounded;
+}
 
 export const postsLoaderByAuthors = async (ids: string[]) => {
     const postList = await Post.findByIdList(ids);

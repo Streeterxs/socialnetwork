@@ -22,7 +22,7 @@ const PostCreationSubscription = subscriptionWithClientId({
         const loggedUser = variables.user;
         const author = await loadUser(postCreated.author);
 
-        return `${loggedUser._id}` === `${author._id}` || !!author.friends.find(friend => `${loggedUser._id}` === `${friend}`);
+        return `${loggedUser._id}` === `${author._id}` || !!author.friends.includes(loggedUser._id);
     }),
     getPayload: async (obj: any) => ({
         id: obj.id

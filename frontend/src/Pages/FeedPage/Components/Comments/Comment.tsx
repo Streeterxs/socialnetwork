@@ -117,11 +117,11 @@ const Comment = ({comment}: any) => {
                 </div>
                 <div className="mb-2">
                     <span className="text-teal-600 mr-2">
-                        <FontAwesomeIcon icon={faThumbsUp} /> {likes}
+                        <FontAwesomeIcon icon={faThumbsUp} /> {likeMutIsInFlight ? likes : commentEdge.node.likes}
                     </span>
-                    <span className={"cursor-pointer text-gray-800 " + (hasLiked ? 'text-teal-600' : '')} onClick={likeHandler}>
+                    <span className={"cursor-pointer text-gray-800 " + ((likeMutIsInFlight ? hasLiked : commentEdge.node.userHasLiked) ? 'text-teal-600' : '')} onClick={likeHandler}>
                         {
-                            hasLiked ?
+                            (likeMutIsInFlight ? hasLiked : commentEdge.node.userHasLiked) ?
                             <>Liked</> :
                             <>Like</>
                         }

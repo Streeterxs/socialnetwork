@@ -4,6 +4,15 @@ schema {
   subscription: SubscriptionType
 }
 
+input CommentLikeSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type CommentLikeSubscriptionPayload {
+  comment: CommentType
+  clientSubscriptionId: String
+}
+
 """Comment type"""
 type CommentType implements Node {
   """The ID of an object"""
@@ -280,6 +289,9 @@ type SubscriptionType {
 
   """Create Comment Subscription"""
   CreateCommentSubscription(input: CreateCommentSubscriptionInput!): CreateCommentSubscriptionPayload
+
+  """Comment Like subscription"""
+  CommentLikeSubscription(input: CommentLikeSubscriptionInput!): CommentLikeSubscriptionPayload
 
   """Reply Creation Subscription"""
   ReplyCreationSubscription(input: ReplyCreationSubscriptionInput!): ReplyCreationSubscriptionPayload

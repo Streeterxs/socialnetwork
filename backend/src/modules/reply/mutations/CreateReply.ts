@@ -3,6 +3,7 @@ import { mutationWithClientMutationId, fromGlobalId } from 'graphql-relay';
 import ReplyType from '../ReplyType';
 import Reply from '../ReplyModel';
 import { commentLoader } from '../../../modules/comments/CommentLoader';
+import { pubsub } from '../../../app';
 
 const CreateReply = mutationWithClientMutationId({
     name: 'CreateReply',
@@ -27,8 +28,9 @@ const CreateReply = mutationWithClientMutationId({
             const reply = new Reply({author: user.id, content});
             await reply.save();
             const commentReturned = await commentLoader(id);
-            commentReturned.replies.push(reply.id);
-            commentReturned.save();
+            commentReturned.replies = [reply.id].concat(commentReturned.replies);
+            await commentReturned.save();
+            pubsub.publish('newReply', reply);
             return reply;
         } catch (err) {
             console.log(err);

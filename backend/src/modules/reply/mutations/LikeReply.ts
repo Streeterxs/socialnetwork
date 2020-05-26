@@ -3,6 +3,7 @@ import { GraphQLString } from "graphql";
 import ReplyType from "../ReplyType";
 import { IUser } from "../../../modules/users/UserModel";
 import Reply from "../ReplyModel";
+import { pubsub } from "../../../app";
 
 const LikeReply = mutationWithClientMutationId({
     name: 'LikeReplay',
@@ -27,10 +28,12 @@ const LikeReply = mutationWithClientMutationId({
                 const indexOf = replyFounded.likes.indexOf(user.id);
                 replyFounded.likes.splice(indexOf, 1);
                 await replyFounded.save();
+                pubsub.publish('replyLike', replyFounded);
                 return replyFounded;
             }
             replyFounded.likes.push(user.id);
             await replyFounded.save();
+            pubsub.publish('replyLike', replyFounded);
             return replyFounded;
         } catch(error) {
             console.log(error);

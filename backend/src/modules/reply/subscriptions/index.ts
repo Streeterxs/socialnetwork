@@ -1,5 +1,7 @@
 import ReplyCreationSubscription from './ReplyCreationSubscription';
+import ReplyLikeSubscription from './ReplyLikeSubscription';
 
 export default {
-    ReplyCreationSubscription
+    ReplyCreationSubscription,
+    ReplyLikeSubscription
 }

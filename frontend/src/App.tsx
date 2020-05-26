@@ -14,12 +14,6 @@ const App = () => {
   const [userIsLogged, setUserIsLogged] = useState(!!localStorage.getItem('authToken'));
   const [environment, setEnvironment] = useState(useRelayEnvironment());
 
-  useEffect(() => {
-    const subscriptionModule = SubscriptionModule(environment);
-    subscriptionModule.disposeAll();
-    subscriptionModule.subscribeAll();
-  }, [environment]);
-
 
   const handleLogoutLogin = () => {
     if (userIsLogged) {

@@ -69,12 +69,7 @@ const Posts = ({posts}: any) => {
             {
                 hasNext ?
                 <button disabled={!hasNext} onClick={() => {
-                    loadNext(1, {
-                        onCompleted: (returnedData: any) => {
-                            console.log('returnedData: ', returnedData);
-                            console.log('newValueData: ', data);
-                        }
-                    })
+                    loadNext(1)
                 }}>Load next page</button> :
                 <p>No more posts to load</p>
             }

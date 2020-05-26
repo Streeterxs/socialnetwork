@@ -73,7 +73,6 @@ const Comment = ({comment}: any) => {
             commitReplyCre({
                 variables,
                 onCompleted: (data: any) => {
-                    console.log(data);
                 }
             })
         }
@@ -91,7 +90,6 @@ const Comment = ({comment}: any) => {
                 onCompleted: ({LikeComment}: any) => {
                     setLikes(LikeComment.comment.likes);
                     setHasLiked(LikeComment.comment.userHasLiked);
-                    console.log(LikeComment);
                 }
             })
         }
@@ -101,7 +99,6 @@ const Comment = ({comment}: any) => {
         setShowReplyCreation(showReplyCreation ? false : true);
     }
 
-    console.log('commentEdge: ', commentEdge);
     return (
         <div className="w-full">
             <div className="my-2">

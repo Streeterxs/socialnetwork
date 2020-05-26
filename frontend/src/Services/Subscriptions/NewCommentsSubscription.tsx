@@ -51,7 +51,6 @@ const NewCommentsSubscription = (environment: RelayModernEnvironment) => {
                 const post = (store.getRootField('CreateCommentSubscription') as RecordProxy<{}>).getLinkedRecord('post') as RecordProxy<{}>;
                 const conn = ConnectionHandler.getConnection(post, 'CommentsTypeFragment_comments') as RecordProxy<{}>;
                 const hasNextPage =  (conn.getLinkedRecord('pageInfo') as RecordProxy<{}>).getValue('hasNextPage');
-                console.log('hasNextPage: ', hasNextPage);
                 let commentEdge = null;
                 if (store && conn && commentNode) {
                     commentEdge = ConnectionHandler.createEdge(store, conn, commentNode, 'CommentTypeEdge');

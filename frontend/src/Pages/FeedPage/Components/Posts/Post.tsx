@@ -81,7 +81,6 @@ const Post = ({post}: any) => {
         commentCreationCommit({
             variables,
             onCompleted: (data: any) => {
-                console.log(data);
             }
         });
     }
@@ -93,8 +92,6 @@ const Post = ({post}: any) => {
         const variables = {
             postId: postEdge.id
         }
-
-        console.log(variables);
 
         likeCrtCommit({
             variables,

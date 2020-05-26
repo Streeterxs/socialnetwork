@@ -49,14 +49,12 @@ const newRepliesSubscriptionModule = (environment: RelayModernEnvironment) => {
             },
             updater: store => {
                 const replyNode = (store.getRootField('ReplyCreationSubscription') as RecordProxy<{}>).getLinkedRecord('reply');
-                const commentNode = (store.getRootField('ReplyCreationSubscription') as RecordProxy<{}>).getLinkedRecord('comment') as RecordProxy<{}>;
-                console.log('commentNode: ', commentNode);
-                console.log('replyNode: ', replyNode);
-                const repliesConnection = ConnectionHandler.getConnection(commentNode, 'RepliesTypeFragment_replies') as RecordProxy<{}>;
-                const hasPreviousPage =  (repliesConnection.getLinkedRecord('pageInfo') as RecordProxy<{}>).getValue('hasPreviousPage');
                 
-                console.log('repliesConnection: ', repliesConnection);
-                console.log('hasPreviousPage: ', hasPreviousPage);
+                const commentNode = (store.getRootField('ReplyCreationSubscription') as RecordProxy<{}>).getLinkedRecord('comment') as RecordProxy<{}>;
+                
+                const repliesConnection = ConnectionHandler.getConnection(commentNode, 'RepliesTypeFragment_replies') as RecordProxy<{}>;
+                
+                const hasPreviousPage =  (repliesConnection.getLinkedRecord('pageInfo') as RecordProxy<{}>).getValue('hasPreviousPage');
 
                 let replyEdge;
                 if(store && repliesConnection && replyNode) {

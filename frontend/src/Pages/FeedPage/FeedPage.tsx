@@ -5,6 +5,8 @@ import {Posts, PostCreation} from './Components'
 import graphql from 'babel-plugin-relay/macro';
 import { useMutation } from 'react-relay/lib/relay-experimental';
 import { useHistory } from 'react-router';
+import environment from 'src/relay/environment';
+import SubscriptionModule from 'src/Services/Subscriptions';
 
 
 const postCreationMutation = graphql`
@@ -25,11 +27,16 @@ const postCreationMutation = graphql`
 const FeedPage = ({userIsLogged} : {
     userIsLogged: boolean
 }) => {
-    console.log('entrou feed page');
+    useEffect(() => {
+        const subscriptionModule = SubscriptionModule(environment);
+        subscriptionModule.subscribeAll();
+        return () => {
+            subscriptionModule.disposeAll();
+        }
+    }, [environment]);
+
     const history = useHistory();
     useEffect(() => {
-        console.log('Entrou feed page');
-        console.log('loggedUser: ', userIsLogged);
         if (userIsLogged) {
             return;
         }
@@ -54,12 +61,8 @@ const FeedPage = ({userIsLogged} : {
         commit({
             variables,
             onCompleted: (data: any) => {
-                console.log(data);
             }
         });
-    }
-    if (isInFlight) {
-        console.log("ESTÁ VOANDOOO UUUUUUUUUUUUUUU");
     }
 
     return (

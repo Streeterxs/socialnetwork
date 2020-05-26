@@ -58,18 +58,10 @@ const Replies = ({replies}: any) => {
                     hasNext ?
                     data.replies && data.replies.edges && data.replies.edges.length <= 0 ?
                     <button disabled={!hasNext} onClick={() => {
-                        loadNext(3, {
-                            onComplete: (returnedData: any) => {
-                                console.log('returnedData: ', returnedData)
-                            }
-                        })
+                        loadNext(3)
                     }}>Load replies</button> :
                     <button disabled={!hasNext} onClick={() => {
-                        loadNext(3, {
-                            onComplete: (returnedData: any) => {
-                                console.log('returnedData: ', returnedData)
-                            }
-                        })
+                        loadNext(3)
                     }}>Load more replies</button> :
                     null
                 }

@@ -1,10 +1,11 @@
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
-import { Variables } from 'relay-runtime/lib/util/RelayRuntimeTypes';
+import { Variables, Disposable } from 'relay-runtime/lib/util/RelayRuntimeTypes';
 import { SubscriptionClient, Observer, OperationOptions } from 'subscriptions-transport-ws';
 
 import config from '../config';
 import { ExecutionResult } from 'graphql';
-import { Observable, SubscribeFunction, Subscribable } from 'relay-runtime';
+import { Observable, SubscribeFunction, Subscribable, GraphQLResponse } from 'relay-runtime';
+import { RelayObservable } from 'relay-runtime/lib/network/RelayObservable';
 
 export function getToken(): string {
   const currentToken = localStorage.getItem('authToken');
@@ -50,19 +51,25 @@ const setupSubscription: SubscribeFunction = (request, variables) => {
   const query = request.text;
   const client = subscriptionClient.request({ query: query!, variables });
 
+  return Observable.from(client as Subscribable<ExecutionResult>) as RelayObservable<GraphQLResponse> | Disposable;
+
   let subscription: any;
-  return {
+  /* return {
     subscribe: (observer: any) => {
       if (!subscription) {
-        subscription = client.subscribe(observer)
+        console.log(observer);
+        subscription = client.subscribe(observer);
+        observer.start(subscription);
       }
     },
     dispose: () => {
       if (subscription) {
-        subscription.unsubscribe()
+        subscriptionClient.unsubscribeAll();
+        subscriptionClient.close();
+        subscription.unsubscribe();
       }
     }
-  };
+  }; */
 }
   
   export { fetchGraphQL, setupSubscription };

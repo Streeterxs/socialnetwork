@@ -74,11 +74,11 @@ const Reply = ({reply}: any) => {
             </div>
             <div className="mb-2">
                 <span className="text-teal-600 mr-2">
-                    <FontAwesomeIcon icon={faThumbsUp} /> {likes}
+                    <FontAwesomeIcon icon={faThumbsUp} /> {likeMutIsInFlight ? likes : replyFragmentReturn.node.likes}
                 </span>
-                <span className={"cursor-pointer text-gray-800 " + (hasLiked ? 'text-teal-600' : '')} onClick={handleLike}>
+                <span className={"cursor-pointer text-gray-800 " + ((likeMutIsInFlight ? hasLiked: replyFragmentReturn.node.userHasLiked) ? 'text-teal-600' : '')} onClick={handleLike}>
                     {
-                        hasLiked ?
+                        (likeMutIsInFlight ? hasLiked : replyFragmentReturn.node.userHasLiked) ?
                         <>Liked</> :
                         <>Like</>
                     }

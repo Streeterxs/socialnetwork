@@ -11,7 +11,8 @@ import {
   PostLikeSubscriptionModule,
   NewCommentsSubscription,
   NewRepliesSubscriptionModule,
-  CommentLikeSubscriptionModule } from './Pages';
+  CommentLikeSubscriptionModule, 
+  ReplyLikeSubscriptionModule} from './Pages';
 
 
 
@@ -39,6 +40,10 @@ const App = () => {
     const commentLikeSubscriptionModule = CommentLikeSubscriptionModule(environment);
     commentLikeSubscriptionModule.dispose();
     commentLikeSubscriptionModule.subscribe();
+
+    const replyLikeSubscriptionModule = ReplyLikeSubscriptionModule(environment);
+    replyLikeSubscriptionModule.dispose();
+    replyLikeSubscriptionModule.subscribe();
   }, [environment]);
 
 

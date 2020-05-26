@@ -251,6 +251,15 @@ type ReplyCreationSubscriptionPayload {
   clientSubscriptionId: String
 }
 
+input ReplyLikeSubscriptionInput {
+  clientSubscriptionId: String
+}
+
+type ReplyLikeSubscriptionPayload {
+  reply: ReplyType
+  clientSubscriptionId: String
+}
+
 """Reply type"""
 type ReplyType implements Node {
   """The ID of an object"""
@@ -295,6 +304,9 @@ type SubscriptionType {
 
   """Reply Creation Subscription"""
   ReplyCreationSubscription(input: ReplyCreationSubscriptionInput!): ReplyCreationSubscriptionPayload
+
+  """Subscription to fetch likes in replies"""
+  ReplyLikeSubscription(input: ReplyLikeSubscriptionInput!): ReplyLikeSubscriptionPayload
 }
 
 input UserCreationInput {

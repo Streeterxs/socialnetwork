@@ -21,13 +21,11 @@ const PostCreation = mutationWithClientMutationId({
     },
     mutateAndGetPayload: async ({content}, {user}: {user: IUser}) => {
         try {
-            console.log(user);
             const postCreated = new Post({content, author: `${user.id}`});
             await postCreated.save();
             user.posts.push(`${postCreated.id}`);
             await user.save();
             pubsub.publish('newPost', postCreated);
-            console.log('new post created!');
             return postCreated;
         } catch (err) {
             console.log(err);

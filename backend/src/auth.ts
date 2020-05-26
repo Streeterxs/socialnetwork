@@ -1,7 +1,7 @@
-import User from "./modules/users/UserModel";
+import User, { IUser } from "./modules/users/UserModel";
 
 
-const getUser = async (token: string) => {
+const getUser = async (token: string): Promise<IUser | {user: null}> => {
     try {
         const user = await User.findByToken(token);
         if (user) {
@@ -9,7 +9,7 @@ const getUser = async (token: string) => {
             return user;
         }
     } catch(err) {
-        console.log(err);
+        return { user: null };
     }
 }
 

@@ -27,9 +27,7 @@ export const mutation = mutationWithClientMutationId({
     mutateAndGetPayload: async ({name, password, email}) => {
         try {
             const newUser = new userModel({name, password, email});
-            console.log(newUser);
             const returnNewUser = await newUser.save();
-            console.log('return new user: ', returnNewUser);
             return returnNewUser;
         } catch (err) {
             console.log(err)

@@ -22,7 +22,6 @@ const CreateCommentSubscription = subscriptionWithClientId({
         post: {
             type: PostType,
             resolve: async (comment: any) =>{
-                console.log('comment: ', comment);
                 const postFounded = await postLoaderByComment(comment.id);
                 return postFounded
             }

@@ -20,8 +20,6 @@ const PostLikeSubscription = subscriptionWithClientId({
     subscribe: withFilter((input: any, context: any) => {
         return pubsub.asyncIterator('postLike');
     }, async (postLiked: IPost, variables: any) => {
-        console.log(postLiked);
-        console.log(variables);
         const loggedUser = variables.user;
         const author = await loadUser(postLiked.author);
 

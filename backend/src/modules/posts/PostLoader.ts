@@ -7,9 +7,7 @@ export const postLoader = async (id: string) => {
 };
 
 export const postLoaderByComment = async (commentId: string) => {
-    console.log('commentId: ', commentId);
     const postFounded = await Post.findOne({comments: commentId});
-    console.log('postFounded: ', postFounded);
     return postFounded;
 }
 

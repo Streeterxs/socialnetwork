@@ -1,6 +1,6 @@
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
 import { Variables, Disposable } from 'relay-runtime/lib/util/RelayRuntimeTypes';
-import { SubscriptionClient, Observer, OperationOptions } from 'subscriptions-transport-ws';
+import { SubscriptionClient, Observer } from 'subscriptions-transport-ws';
 
 import config from '../config';
 import { ExecutionResult } from 'graphql';
@@ -34,7 +34,7 @@ async function fetchGraphQL(request: RequestParameters, variables: Variables) {
   }
 
 
-const setupSubscription: SubscribeFunction = (request, variables) => {
+const setupSubscription: SubscribeFunction = (operation, variables, cacheConfig) => {
 
 
   const subscriptionClient = new SubscriptionClient(
@@ -48,28 +48,36 @@ const setupSubscription: SubscribeFunction = (request, variables) => {
     },
   );
 
-  const query = request.text;
+  const query = operation.text;
   const client = subscriptionClient.request({ query: query!, variables });
-
-  return Observable.from(client as Subscribable<ExecutionResult>) as RelayObservable<GraphQLResponse> | Disposable;
-
   let subscription: any;
-  /* return {
-    subscribe: (observer: any) => {
+  const subscribable = {
+    subscribe: (observer: Observer<ExecutionResult>) => {
       if (!subscription) {
-        console.log(observer);
-        subscription = client.subscribe(observer);
-        observer.start(subscription);
+        subscription = client.subscribe({
+          next: result => {
+            if (observer.next) observer.next({ data: result.data });
+          },
+          complete: () => {
+            if (observer.complete) observer.complete();
+          },
+          error: error => {
+            if (observer.error) observer.error(error);
+          }
+        });
       }
-    },
-    dispose: () => {
-      if (subscription) {
-        subscriptionClient.unsubscribeAll();
-        subscriptionClient.close();
-        subscription.unsubscribe();
+        return {
+          unsubscribe: () => {
+          if (subscription) {
+            subscriptionClient.close();
+            subscription.unsubscribe();
+          }
+        }
       }
     }
-  }; */
+  };
+
+  return (Observable.from(subscribable as Subscribable<ExecutionResult>) as RelayObservable<GraphQLResponse> | Disposable);
 }
   
-  export { fetchGraphQL, setupSubscription };
+export { fetchGraphQL, setupSubscription };

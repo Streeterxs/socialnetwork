@@ -6,13 +6,7 @@ import Routes from './routes';
 import { Layout } from './Components';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
-import {
-  NewPostsSubscriptionModule,
-  PostLikeSubscriptionModule,
-  NewCommentsSubscription,
-  NewRepliesSubscriptionModule,
-  CommentLikeSubscriptionModule, 
-  ReplyLikeSubscriptionModule} from './Pages';
+import SubscriptionModule from './Services/Subscriptions';
 
 
 
@@ -21,29 +15,9 @@ const App = () => {
   const [environment, setEnvironment] = useState(useRelayEnvironment());
 
   useEffect(() => {
-    const postSubscribeModule = NewPostsSubscriptionModule(environment);
-    postSubscribeModule.dispose()
-    postSubscribeModule.subscribe();
-
-    const postLikeSubscribeModule = PostLikeSubscriptionModule(environment);
-    postLikeSubscribeModule.dispose()
-    postLikeSubscribeModule.subscribe();
-
-    const commentSubscribeModule = NewCommentsSubscription(environment);
-    commentSubscribeModule.dispose();
-    commentSubscribeModule.subscribe();
-
-    const replySubscribeModule = NewRepliesSubscriptionModule(environment);
-    replySubscribeModule.dispose();
-    replySubscribeModule.subscribe();
-
-    const commentLikeSubscriptionModule = CommentLikeSubscriptionModule(environment);
-    commentLikeSubscriptionModule.dispose();
-    commentLikeSubscriptionModule.subscribe();
-
-    const replyLikeSubscriptionModule = ReplyLikeSubscriptionModule(environment);
-    replyLikeSubscriptionModule.dispose();
-    replyLikeSubscriptionModule.subscribe();
+    const subscriptionModule = SubscriptionModule(environment);
+    subscriptionModule.disposeAll();
+    subscriptionModule.subscribeAll();
   }, [environment]);
 
 

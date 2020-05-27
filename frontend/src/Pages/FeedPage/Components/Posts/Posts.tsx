@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import {  usePaginationFragment } from 'react-relay/lib/relay-experimental';
 import graphql from 'babel-plugin-relay/macro';
@@ -38,6 +38,7 @@ fragment PostsTypeFragment on Query
 }`
 
 const Posts = ({posts}: any) => {
+    const [isPaginating, setIsPaginating] = useState(false);
 
     const {
         data,
@@ -50,6 +51,27 @@ const Posts = ({posts}: any) => {
         refetch // For refetching connection
       }: any = usePaginationFragment(postsTypeFragment,
     posts);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [loadNext]);
+
+    const handleScroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+        console.log('isLoadingNext: ', isLoadingNext);
+        if (hasNext && !isLoadingNext && !isPaginating) {
+            setIsPaginating(true);
+            handleLoadNext();
+        };
+    }
+
+    const handleLoadNext = () => {
+        loadNext(2, {onComplete: () => {
+            console.log('completed load next');
+            setIsPaginating(false);
+        }});
+    }
 
     return (
         <div className="w-full">
@@ -68,9 +90,7 @@ const Posts = ({posts}: any) => {
             }
             {
                 hasNext ?
-                <button disabled={!hasNext} onClick={() => {
-                    loadNext(1)
-                }}>Load next page</button> :
+                <p>Loading...</p>  :
                 <p>No more posts to load</p>
             }
         </div>

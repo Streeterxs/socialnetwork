@@ -37,8 +37,12 @@ const LoginPage = ({setUserIsLogged}: {
         commit({
             variables,
             onCompleted: (data: any) => {
-                console.log(data);
-                localStorage.setItem('authToken', data.Login.user.token);
+                
+                if (data.Login.user.token) {
+
+                    localStorage.setItem('authToken', data.Login.user.token);
+                }
+
                 setUserIsLogged(data.Login.user.token ? true : false);
                 history.push('/');
             }

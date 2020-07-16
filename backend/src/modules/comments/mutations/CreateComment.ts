@@ -6,6 +6,7 @@ import CommentType from '../CommentType';
 import { postLoader } from '../../../modules/posts/PostLoader';
 import { IUser } from '../../../modules/users/UserModel';
 import { pubsub } from '../../../app';
+import { commentLoader } from '../CommentLoader';
 
 const CreateComment = mutationWithClientMutationId({
     name: 'CreateComment',
@@ -21,7 +22,7 @@ const CreateComment = mutationWithClientMutationId({
     outputFields: {
         comment: {
             type: CommentType,
-            resolve: (comment) => comment
+            resolve: async (comment) => await commentLoader(comment)
         }
     },
     mutateAndGetPayload: async ({content, post} : {
@@ -29,14 +30,20 @@ const CreateComment = mutationWithClientMutationId({
         post: string
     }, {user}: {user: IUser}) => {
         try {
+
             const {type, id} = fromGlobalId(post);
+
             const postId = id;
+
             const comment = new Comment({author: user.id, content});
             await comment.save();
+
             const postFinded = await postLoader(postId);
             postFinded.comments.push(comment.id);
             await postFinded.save();
+
             pubsub.publish('newComment', comment);
+
             return comment;
         } catch (err) {
             console.log(err);

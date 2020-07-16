@@ -1,9 +1,10 @@
 import { subscriptionWithClientId } from "graphql-relay-subscription";
+import { withFilter } from "graphql-subscriptions";
+
 import ReplyType from "../ReplyType";
 import { replyLoader } from "../ReplyLoader";
 import CommentType from "../../comments/CommentType";
 import { commentLoaderByReply } from "../../comments/CommentLoader";
-import { withFilter } from "graphql-subscriptions";
 import { IReply } from "../ReplyModel";
 import { pubsub } from "../../../app";
 import { IComment } from "../../comments/CommentModel";
@@ -25,15 +26,18 @@ const ReplyCreationSubscription = subscriptionWithClientId({
             resolve: (replyObj: any) => commentLoaderByReply(replyObj.id)
         }
     },
-    subscribe: withFilter((input: any, context: any) => {
-        return pubsub.asyncIterator('newReply')
-    }, async (reply: IReply, variables: any) => {
-        const commentFounded: IComment = await commentLoaderByReply(reply._id);
-        const postFounded: IPost = await postLoaderByComment(commentFounded._id);
-        const postAuthor = await loadUser(postFounded.author);
+    subscribe: withFilter(
+        (input: any, context: any) => {
+            return pubsub.asyncIterator('newReply')
+        },
+        async (reply: IReply, variables: any) => {
+            const commentFounded: IComment = await commentLoaderByReply(reply._id);
+            const postFounded: IPost = await postLoaderByComment(commentFounded._id);
+            const postAuthor = await loadUser(postFounded.author);
 
-        return `${postAuthor._id}` === `${reply.author}` || postAuthor.friends.includes(reply.author);
-    }),
+            return `${postAuthor._id}` === `${reply.author}` || postAuthor.friends.includes(reply.author);
+        }
+    ),
     getPayload: (replyObj: any) => ({
         id: replyObj.id
     })

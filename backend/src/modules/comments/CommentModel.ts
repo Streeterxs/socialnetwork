@@ -40,6 +40,6 @@ commentSchema.statics.findCommentsForPost = async (postId: string) => {
     return commentsOfPost;
 };
 
-const Comment = mongoose.model<IComment, ICommentModel>('Comment', commentSchema);
+const Comment = mongoose.model<IComment, ICommentModel>('Comment_SocialNetwork', commentSchema);
 
 export default Comment;

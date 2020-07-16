@@ -27,16 +27,18 @@ const CreateCommentSubscription = subscriptionWithClientId({
             }
         }
     },
-    subscribe: withFilter((input: any, context: any) => {
-        return pubsub.asyncIterator('newComment');
-    }, async (comment: IComment, variables: any) => {
-        const postFounded = await postLoaderByComment(comment._id);
-        const postFoundedAuthor = await loadUser(postFounded.author);
+    subscribe: withFilter(
+        (input: any, context: any) => {
+            return pubsub.asyncIterator('newComment');
+        }, async (comment: IComment, variables: any) => {
+            const postFounded = await postLoaderByComment(comment._id);
+            const postFoundedAuthor = await loadUser(postFounded.author);
 
-        const loggedUser = variables.user;
+            const loggedUser = variables.user;
 
-        return `${loggedUser._id}` === `${postFoundedAuthor._id}` || postFoundedAuthor.friends.includes(loggedUser._id);
-    }),
+            return `${loggedUser._id}` === `${postFoundedAuthor._id}` || postFoundedAuthor.friends.includes(loggedUser._id);
+        }
+    ),
     getPayload: (obj: any) => {
         return {
             id: obj.id

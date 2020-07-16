@@ -17,14 +17,17 @@ const PostLikeSubscription = subscriptionWithClientId({
             resolve: (post: IPost) => postLoader(post.id)
         }
     },
-    subscribe: withFilter((input: any, context: any) => {
-        return pubsub.asyncIterator('postLike');
-    }, async (postLiked: IPost, variables: any) => {
-        const loggedUser = variables.user;
-        const author = await loadUser(postLiked.author);
+    subscribe: withFilter(
+        (input: any, context: any) => {
+            return pubsub.asyncIterator('postLike');
+        },
+        async (postLiked: IPost, variables: any) => {
+            const loggedUser = variables.user;
+            const author = await loadUser(postLiked.author);
 
-        return `${loggedUser._id}` === `${author._id}` || !!author.friends.includes(loggedUser._id);
-    }),
+            return `${loggedUser._id}` === `${author._id}` || !!author.friends.includes(loggedUser._id);
+        }
+    ),
     getPayload: (obj: any) => {
         return {
             id: obj.id

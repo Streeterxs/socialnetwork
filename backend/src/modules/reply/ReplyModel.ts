@@ -26,6 +26,6 @@ const replySchema = new mongoose.Schema({
     timestamps: true
 });
 
-const Reply = mongoose.model<IReply>('Reply', replySchema);
+const Reply = mongoose.model<IReply>('Reply_SocialNetwork', replySchema);
 
 export default Reply

@@ -3,6 +3,7 @@ import { GraphQLString } from "graphql";
 import userType from "../UserType";
 import userModel from "../UserModel";
 import { mutationWithClientMutationId } from "graphql-relay";
+import { loadUser } from "../UserLoader";
 
 export const mutation = mutationWithClientMutationId({
     name: 'UserCreation',
@@ -21,7 +22,7 @@ export const mutation = mutationWithClientMutationId({
     outputFields: {
         user: {
             type: userType,
-            resolve: (user) => user
+            resolve: async (user) => await loadUser(user.id)
         }
     },
     mutateAndGetPayload: async ({name, password, email}) => {

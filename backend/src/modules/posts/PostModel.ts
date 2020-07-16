@@ -13,7 +13,7 @@ export interface IPost extends mongoose.Document {
 
 export interface IPostModel extends mongoose.Model<IPost> {
     findAuthorPosts(id: string): IPost[];
-    findByIdList(ids: string[]): IPost[];
+    findByAuthorIdList(ids: string[]): IPost[];
     findLoggedUserPosts(token: string): IPost[];
 }
 
@@ -44,7 +44,7 @@ postSchema.statics.findAuthorPosts = async (id: string) => {
     return posts;
 }
 
-postSchema.statics.findByIdList = async (ids: string[]) => {
+postSchema.statics.findByAuthorIdList = async (ids: string[]) => {
     const posts = await Post.find({author: {$in: ids}}).sort({createdAt: -1});
     return posts;
 }
@@ -55,6 +55,6 @@ postSchema.statics.findLoggedUserPosts = async (token: string) => {
 }
 
 
-const Post = mongoose.model<IPost, IPostModel>('Post', postSchema);
+const Post = mongoose.model<IPost, IPostModel>('Post_SocialNetwork', postSchema);
 
 export default Post;

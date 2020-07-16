@@ -17,24 +17,33 @@ const LikePost = mutationWithClientMutationId({
     outputFields: {
         post: {
             type: PostType,
-            resolve: (post) => post
+            resolve: async (post) => await postLoader(post.id)
         }
     },
     mutateAndGetPayload: async ({post}: {post: string}, {user}: {user: IUser}) => {
         try {
+
             const {type, id} = fromGlobalId(post);
+
             const postId = id;
             const postFounded = await postLoader(postId);
+
             if (postFounded.likes.includes(user.id)) {
+
                 const indexOf = postFounded.likes.indexOf(user.id);
                 postFounded.likes.splice(indexOf, 1);
                 await postFounded.save();
+
                 pubsub.publish('postLike', postFounded);
+
                 return postFounded;
             }
+
             postFounded.likes.push(user._id);
             await postFounded.save();
+
             pubsub.publish('postLike', postFounded);
+
             return postFounded;
         } catch(err) {
             console.log(err);

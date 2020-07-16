@@ -21,15 +21,18 @@ const replyLikeSubscription = subscriptionWithClientId({
             resolve: (replyObj: any) => replyLoader((replyObj.id))
         }
     },
-    subscribe: withFilter((input: any, context: any)=>{
-        return pubsub.asyncIterator('replyLike');
-    }, async (reply: IReply, variables: any)=>{
-        const commentFounded: IComment = await commentLoaderByReply(reply._id);
-        const postFounded: IPost = await postLoaderByComment(commentFounded._id);
-        const postAuthor = await loadUser(postFounded.author);
+    subscribe: withFilter(
+        (input: any, context: any)=>{
+            return pubsub.asyncIterator('replyLike');
+        },
+        async (reply: IReply, variables: any)=>{
+            const commentFounded: IComment = await commentLoaderByReply(reply._id);
+            const postFounded: IPost = await postLoaderByComment(commentFounded._id);
+            const postAuthor = await loadUser(postFounded.author);
 
-        return `${postAuthor._id}` === `${reply.author}` || postAuthor.friends.includes(reply.author);
-    }),
+            return `${postAuthor._id}` === `${reply.author}` || postAuthor.friends.includes(reply.author);
+        }
+    ),
     getPayload: (replyObj: any) => ({
         id: replyObj.id
     })

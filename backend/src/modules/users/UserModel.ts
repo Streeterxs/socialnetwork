@@ -104,7 +104,7 @@ userSchema.statics.findByToken = async (token: string) => {
     return user;
 }
 
-const User = mongoose.model<IUser, IUserModel>('User', userSchema);
+const User = mongoose.model<IUser, IUserModel>('User_SocialNetwork', userSchema);
 
 
 export default User;

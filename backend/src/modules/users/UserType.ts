@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 
 import { IUser } from './UserModel';
-import { userLoader, loadUser } from './UserLoader';
+import { loadUser, userIdLoader } from './UserLoader';
 import { connectionDefinitions, connectionArgs, connectionFromArray } from 'graphql-relay';
 import PostType, { PostConnection } from '../posts/PostType';
 
@@ -59,7 +59,7 @@ const userType = new GraphQLObjectType<IUser>({
             },
             _id: {
                 type: GraphQLString,
-                resolve: (user, _) => userLoader(user, '_id')
+                resolve: (user, _) => userIdLoader(user, '_id')
             }
         }
     )

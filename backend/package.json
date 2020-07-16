@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
+    "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
     "graphql": "^15.0.0",
     "graphql-playground-middleware-koa": "^1.6.13",

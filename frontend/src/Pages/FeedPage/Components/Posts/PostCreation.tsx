@@ -7,9 +7,7 @@ const PostCreation = ({contentChange, formSubmit}:
     }
     ) => {
 
-    const [startTransition, isPending] = useTransition({
-            timeoutMs: 10000
-        });
+    const [startTransition, isPending] = useTransition();
 
     const postSubmitTransition = (event: React.FormEvent<HTMLFormElement>) => {
         startTransition(() => {

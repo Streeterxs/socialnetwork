@@ -10,9 +10,10 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "babel-plugin-relay": "^9.0.0",
-    "react": "0.14.0",
+    "react": "0.0.0-experimental-33c3af284",
     "react-dom": "0.0.0-experimental-33c3af284",
     "react-relay": "0.0.0-experimental-8cc94ddc",
+    "react-router": "5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "relay-runtime": "^9.0.0",
@@ -25,7 +26,7 @@
     "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css",
     "start": "npm run relay && npm run tailwind:css && react-scripts start",
     "build": "npm run relay && react-scripts build",
-    "relay": "yarn run relay-compiler --schema ./schema/schema.graphql --src ./src/ --watchman false $@  --language typescript"
+    "relay": "npx relay-compiler --schema ./schema/schema.graphql --src ./src/ --watchman false $@  --language typescript"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,7 +52,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^8.0.8",
     "autoprefixer": "^9.7.6",
-    "graphql": "^15.0.0",
+    "graphql": "^14",
     "postcss-cli": "^7.1.0",
     "relay-compiler": "^9.0.0",
     "relay-compiler-language-typescript": "^12.0.1",

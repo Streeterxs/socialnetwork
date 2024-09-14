@@ -2,24 +2,6 @@
   "name": "social-network",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.28",
-    "@fortawesome/free-regular-svg-icons": "^5.13.0",
-    "@fortawesome/react-fontawesome": "^0.1.9",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "babel-plugin-relay": "^9.0.0",
-    "react": "0.0.0-experimental-33c3af284",
-    "react-dom": "0.0.0-experimental-33c3af284",
-    "react-relay": "0.0.0-experimental-8cc94ddc",
-    "react-router": "5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "relay-runtime": "^9.0.0",
-    "subscriptions-transport-ws": "^0.9.16",
-    "typescript": "^3.7.5"
-  },
   "scripts": {
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -42,6 +24,27 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "=16"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "babel-plugin-relay": "^9.0.0",
+    "react": "0.0.0-experimental-33c3af284",
+    "react-dom": "0.0.0-experimental-33c3af284",
+    "react-relay": "0.0.0-experimental-8cc94ddc",
+    "react-router": "5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "relay-runtime": "^9.0.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",

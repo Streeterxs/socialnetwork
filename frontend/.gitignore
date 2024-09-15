@@ -23,6 +23,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#Graphql Generated
+# Graphql Generated
 __generated__
 index.css
+
+# Docker Logs
+dockerBuild.log

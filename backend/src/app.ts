@@ -7,7 +7,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import logger from 'koa-logger';
 import cors from 'kcors';
-import graphqlHttp from 'koa-graphql';
+import {graphqlHTTP} from 'koa-graphql';
 import koaPlayground from 'graphql-playground-middleware-koa';
 
 import { Schema } from './schema/Schema';
@@ -46,7 +46,7 @@ const graphQLHttpSettings = async (req: any) => {
     }
 }
 
-const graphqlServerConfig = graphqlHttp(graphQLHttpSettings);
+const graphqlServerConfig = graphqlHTTP(graphQLHttpSettings);
 
 router.all('/graphql', graphqlServerConfig);
 router.all('/graphql', koaPlayground({

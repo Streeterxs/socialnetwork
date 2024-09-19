@@ -13,7 +13,7 @@ type ConnectionParams = {
 (async () => {
 const server = createServer(App.callback());
 
-server.listen('3333', () => {
+server.listen(process.env.PORT ?? '3333', () => {
     console.log('O servidor foi iniciado');
 });
 
